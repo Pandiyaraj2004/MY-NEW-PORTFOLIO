@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Certification Portfolio - Pandiyaraj</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0f1724; /* deep navy */
+      --card:#0b1220;
+      --muted:#94a3b8;
+      --accent:#4f46e5; /* indigo */
+      --glass: rgba(255,255,255,0.04);
+      --glass-2: rgba(255,255,255,0.02);
+      --radius:16px;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#071126);color:#e6eef8}
+    .wrap{max-width:1100px;margin:36px auto;padding:24px}
+    header{display:flex;gap:16px;align-items:center;margin-bottom:20px}
+    .avatar{width:72px;height:72px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#06b6d4);display:flex;align-items:center;justify-content:center;font-weight:800;color:white;font-size:24px}
+    h1{margin:0;font-size:20px}
+    p.lead{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+    .controls{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0}
+    .search{flex:1;min-width:220px}
+    input[type="search"]{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--glass);background:var(--glass-2);color:inherit;outline:none}
+    .btn{padding:10px 14px;border-radius:12px;border:none;background:var(--accent);color:white;font-weight:600;cursor:pointer}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+
+    .grid{display:grid;grid-template-columns:repeat( auto-fit, minmax(260px, 1fr) );gap:16px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:var(--radius);padding:16px;border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(6px)}
+    .card h3{margin:0 0 6px;font-size:16px}
+    .issuer{font-size:13px;color:var(--muted);margin-bottom:10px}
+    .meta{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:12px}
+    .meta span{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:999px}
+    .card .actions{display:flex;gap:8px}
+    a.link{flex:1;text-decoration:none;padding:10px 12px;border-radius:10px;background:rgba(255,255,255,0.02);color:inherit;border:1px solid rgba(255,255,255,0.03);display:inline-flex;align-items:center;justify-content:center;font-weight:600}
+    a.link:hover{transform:translateY(-2px)}
+    .small{font-size:12px;color:var(--muted)}
+
+    footer{margin-top:26px;text-align:center;color:var(--muted);font-size:13px}
+
+    /* responsive tweaks */
+    @media (max-width:520px){
+      header{align-items:flex-start}
+      .avatar{width:56px;height:56px}
+    }
+
+    /* subtle card hover */
+    .card:hover{transform:translateY(-6px);transition:transform 220ms cubic-bezier(.2,.9,.2,1)}
+
+    /* tag colors */
+    .tag{display:inline-block;padding:6px 8px;border-radius:999px;background:rgba(79,70,229,0.12);color:var(--accent);font-weight:600}
+
+    /* modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,0.6);z-index:40}
+    .modal.open{display:flex}
+    .modal .panel{background:linear-gradient(180deg,#071428,#061126);padding:20px;border-radius:12px;max-width:880px;width:96%;border:1px solid rgba(255,255,255,0.04)}
+    .modal .panel h2{margin-top:0}
+    .modal .actions{display:flex;gap:8px;justify-content:flex-end}
+
+    /* empty state */
+    .empty{padding:28px;border-radius:12px;border:1px dashed rgba(255,255,255,0.03);text-align:center;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="avatar">PJ</div>
+      <div>
+        <h1>Pandiyaraj — Certification Portfolio</h1>
+        <p class="lead">Verified certifications & internship credentials. Click a card to view details or open the certificate link.</p>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="search">
+        <input id="q" type="search" placeholder="Search certifications, issuer, year, or skill (e.g., Python, TCS)" oninput="applyFilter()">
+      </div>
+      <button class="btn" onclick="resetFilter()">Show all</button>
+      <button class="btn ghost" onclick="openAll()">Open All Links</button>
+    </div>
+
+    <main>
+      <div id="grid" class="grid">
+        <!-- Card template entries -->
+
+        <article class="card" data-title="TCS NQT" data-issuer="TCS" data-year="2025" data-tags="assessment,placement">
+          <h3>TCS NQT — <span class="tag">79.20%</span></h3>
+          <div class="issuer">TCS National Qualifier Test</div>
+          <div class="meta"><span>2025</span><span>Score: 79.20%</span><span>Assessment</span></div>
+          <div class="small">Credential ID: <strong>—</strong></div>
+          <div style="height:10px"></div>
+          <div class="actions">
+            <a class="link" href="https://drive.google.com/file/d/10oR-NC_gM3_3cJMXc_FceqT00JG5IOk3/view?usp=drive_link" target="_blank" rel="noopener">View Certificate</a>
+            <button class="btn ghost" onclick="showDetails(event,this)">Details</button>
+          </div>
+        </article>
+
+        <article class="card" data-title="Machine Learning with Real World Applications" data-issuer="TCS iON" data-year="2024" data-tags="machine learning,ml">
+          <h3>Machine Learning with Real World Applications</h3>
+          <div class="issuer">TCS iON</div>
+          <div class="meta"><span>2024</span><span>Online Course</span></div>
+          <div class="small"><strong></strong></div>
+          <div style="height:10px"></div>
+          <div class="actions">
+            <a class="link" href="https://drive.google.com/file/d/1jfaWfNAPRzXV0VIWCtLX83hcDtIdLqj3/view?usp=drive_link" target="_blank" rel="noopener">View Certificate</a>
+            <button class="btn ghost" onclick="showDetails(event,this)">Details</button>
+          </div>
+        </article>
+
+        <article class="card" data-title="Python: Beginner to Advanced Course" data-issuer="Udemy" data-year="2025" data-tags="python,programming">
+          <h3>Python: Beginner to Advanced Course</h3>
+          <div class="issuer">Udemy</div>
+          <div class="meta"><span>2025</span><span>Self-paced</span></div>
+          <div class="small"><strong></strong></div>
+          <div style="height:10px"></div>
+          <div class="actions">
+            <a class="link" href="https://www.udemy.com/certificate/UC-aaf90493-3327-42dc-8b05-ba8fe14342fb/" target="_blank" rel="noopener">View Certificate</a>
+            <button class="btn ghost" onclick="showDetails(event,this)">Details</button>
+          </div>
+        </article>
+
+        <article class="card" data-title="Data Science Course & Internship" data-issuer="Edutentar" data-year="2024" data-tags="data science,internship">
+          <h3>Data Science Course & Internship</h3>
+          <div class="issuer">Edutentar</div>
+          <div class="meta"><span>2024</span><span>Course + Internship</span></div>
+          <div class="small">Credential ID: <strong>—</strong></div>
+          <div style="height:10px"></div>
+          <div class="actions">
+<a class="link" href="https://drive.google.com/file/d/1X9oc6Codh59qcnkuIgyl8O7KK5dy8WNi/view?usp=drive_link" target="_blank" rel="noopener">View Course Certificate</a>
+            <a class="link" href="https://drive.google.com/file/d/1Nk1aUK_BP-ahKSREkYfgiNe69U6vuiFl/view?usp=drive_link" target="_blank" rel="noopener">View internship Certificate</a>
+            <button class="btn ghost" onclick="showDetails(event,this)">Details</button>
+          </div>
+        </article>
+
+        <article class="card" data-title="Tata Forge – Data Visualization Internship" data-issuer="Tata Forge" data-year="2025" data-tags="data viz,tableau,powerbi">
+          <h3>Tata Forge – Data Visualization Internship</h3>
+          <div class="issuer">Tata Forge</div>
+          <div class="meta"><span>2025</span><span>Internship Certification</span></div>
+          <div class="small"><strong></strong></div>
+          <div style="height:10px"></div>
+          <div class="actions">
+            <a class="link" href="https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/ifobHAoMjQs9s6bKS/MyXvBcppsW2FkNYCX_ifobHAoMjQs9s6bKS_7ZHcJH4BmWyedbSJT_1755885128161_completion_certificate.pdf" target="_blank" rel="noopener">View Certificate</a>
+            <button class="btn ghost" onclick="showDetails(event,this)">Details</button>
+          </div>
+        </article>
+
+        <article class="card" data-title="Tata Forge – Data Visualization Internship" data-issuer="Tata Forge" data-year="2025" data-tags="data viz,tableau,powerbi">
+          <h3>Tata Forge GenAI Powered Data Analytics Job Simulation</h3>
+          <div class="issuer">Tata Forge</div>
+          <div class="meta"><span>2025</span><span>Internship Certification</span></div>
+          <div class="small"><strong></strong></div>
+          <div style="height:10px"></div>
+          <div class="actions">
+            <a class="link" href="https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/ifobHAoMjQs9s6bKS/gMTdCXwDdLYoXZ3wG_ifobHAoMjQs9s6bKS_7ZHcJH4BmWyedbSJT_1755947859253_completion_certificate.pdf" target="_blank" rel="noopener">View Certificate</a>
+            <button class="btn ghost" onclick="showDetails(event,this)">Details</button>
+          </div>
+        </article>
+
+        <article class="card" data-title="Forge Dolittle – Data Analytics with GenAI Internship" data-issuer="Forge Dolittle" data-year="2025" data-tags="genai,analytics">
+          <h3>Forge Dolittle – Data Analytics Job Simulation</h3>
+          <div class="issuer">Forge Dolittle</div>
+          <div class="meta"><span>2025</span><span>Internship Certification</span></div>
+          <div class="small"><strong></strong></div>
+          <div style="height:10px"></div>
+          <div class="actions">
+            <a class="link" href="https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/9PBTqmSxAf6zZTseP/io9DzWKe3PTsiS6GG_9PBTqmSxAf6zZTseP_7ZHcJH4BmWyedbSJT_1756140311902_completion_certificate.pdf" target="_blank" rel="noopener">View Certificate</a>
+            <button class="btn ghost" onclick="showDetails(event,this)">Details</button>
+          </div>
+        </article>
+
+      </div>
+
+      <div id="empty" class="empty" style="display:none">No certifications match your search.</div>
+
+    </main>
+
+    <footer>
+    </footer>
+  </div>
+
+  <!-- modal for details -->
+  <div id="modal" class="modal" onclick="closeModal(event)">
+    <div class="panel" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+      <h2 id="m-title">Certificate Title</h2>
+      <p id="m-issuer" class="small"></p>
+      <p id="m-desc" style="margin-top:12px;color:var(--muted)"></p>
+      <div style="height:12px"></div>
+      <div class="actions">
+        <a id="m-link" class="link" target="_blank" rel="noopener">Open Certificate</a>
+        <button class="btn ghost" onclick="copyLink()">Copy Link</button>
+        <button class="btn" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function applyFilter(){
+      const q = document.getElementById('q').value.trim().toLowerCase();
+      const cards = Array.from(document.querySelectorAll('#grid .card'));
+      let visible = 0;
+      cards.forEach(c=>{
+        const title = c.dataset.title.toLowerCase();
+        const issuer = c.dataset.issuer.toLowerCase();
+        const tags = c.dataset.tags.toLowerCase();
+        const year = c.dataset.year;
+        const match = q === '' || title.includes(q) || issuer.includes(q) || tags.includes(q) || year.includes(q);
+        c.style.display = match ? '' : 'none';
+        if(match) visible++;
+      });
+      document.getElementById('empty').style.display = visible ? 'none' : '';
+    }
+    function resetFilter(){document.getElementById('q').value='';applyFilter();}
+    function openAll(){
+      const links = Array.from(document.querySelectorAll('#grid a.link'));
+      links.forEach(l=>{ if(l.href && l.href!=='#' && !l.href.includes('example.com')) window.open(l.href,'_blank'); });
+      alert('Opened all non-example links in new tabs (skipped placeholder example.com links).');
+    }
+    function showDetails(ev,btn){
+      ev.stopPropagation();
+      const card = btn.closest('.card');
+      const title = card.dataset.title;
+      const issuer = card.dataset.issuer;
+      const year = card.dataset.year;
+      const link = card.querySelector('a.link').href;
+      document.getElementById('m-title').textContent = title;
+      document.getElementById('m-issuer').textContent = issuer + ' • ' + year;
+      document.getElementById('m-desc').textContent = 'Tags: ' + (card.dataset.tags || '—');
+      const mlink = document.getElementById('m-link'); mlink.href = link; mlink.textContent = 'Open Certificate';
+      // store link for copy
+      mlink.dataset.copy = link;
+      document.getElementById('modal').classList.add('open');
+    }
+    function closeModal(ev){
+      if(ev && ev.target && ev.target.id==='modal') document.getElementById('modal').classList.remove('open');
+      else document.getElementById('modal').classList.remove('open');
+    }
+    function copyLink(){
+      const link = document.getElementById('m-link').dataset.copy;
+      if(!link) return;
+      navigator.clipboard?.writeText(link).then(()=>alert('Link copied to clipboard'))
+      .catch(()=>{ prompt('Copy this link:',link); });
+    }
+    // keyboard: Esc to close modal
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+  </script>
+</body>
+</html>
