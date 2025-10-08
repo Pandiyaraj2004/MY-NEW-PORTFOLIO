@@ -45,7 +45,7 @@ ScrollReveal().reveal('.home-content h1,.about-img',{origin:'left'});
 ScrollReveal().reveal('.home-content p,.about-content',{origin:'right'});
 
 const typed = new Typed('.multiple-text',{
-    strings:['MCA Student in Alagappa University ','Data Analyst','Data Scientist'],
+    strings:['MCA Student ','Data Analyst','Data Scientist','Web Developer','Softwere Developer','Python Developer'],
     typeSpeed:100,
     backSpeed:100,
     backDelay:1000,
