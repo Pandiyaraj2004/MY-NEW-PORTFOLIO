@@ -1,5 +1,5 @@
 # MY-NEW-PORTFOLIO
-# 💼 Pandiyaraj A – Data Science Portfolio
+# 💼 Pandiyaraj A – Portfolio
 
 Hi, I'm **Pandiyaraj A**, an MCA student passionate about AI, Data Science, and building real-world applications. I specialize in machine learning, data visualization, and natural language processing. This portfolio showcases my projects, certifications, and skills aimed at solving real-world data problems.
 
