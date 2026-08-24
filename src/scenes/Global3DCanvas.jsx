@@ -448,24 +448,29 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       mouseX += (targetMouseX - mouseX) * 0.045;
       mouseY += (targetMouseY - mouseY) * 0.045;
 
-      // Base X offset: on desktop, offset to right in hero matching the reference composition
-      const isDesktop = window.innerWidth >= 1024;
-      const heroXOffset = isDesktop ? (window.innerWidth >= 1440 ? 3.4 : 3.0) : 0;
-      const targetCoreX = heroXOffset * Math.max(0, 1 - currentScroll * 1.6) + mouseX * 0.25;
-      const targetCoreY = (isDesktop ? 0.15 : 0) - currentScroll * 4.2 + Math.cos(elapsed * 0.5) * 0.05 - mouseY * 0.25;
-      const targetCoreZ = -currentScroll * 7.5;
+      // Dynamic Right-to-Left and Left-to-Right Horizontal Weaving along Scroll Journey
+      const swayAmplitude = window.innerWidth >= 1024 ? 2.5 : 1.1;
+      const horizontalSway = Math.sin(currentScroll * Math.PI * 4.0) * swayAmplitude;
+      const targetCoreX = horizontalSway + mouseX * 0.25;
+      const targetCoreY = -currentScroll * 4.0 + Math.cos(elapsed * 0.5) * 0.05 - mouseY * 0.25;
+      const targetCoreZ = -currentScroll * 7.0;
 
-      // A. Dual-Axis Continuous Rotation & Breathing Scale of Geodesic Sphere
+      // A. Dual-Axis Continuous Rotation & Scroll-Driven Rolling of Geodesic Sphere
       if (coreMasterGroup) {
         if (!prefersReducedMotion) {
-          // Slow diagonal rotation matching reference
-          coreMasterGroup.rotation.y = elapsed * 0.12 + mouseX * 0.3;
-          coreMasterGroup.rotation.x = Math.sin(elapsed * 0.08) * 0.18 - mouseY * 0.2;
-          coreMasterGroup.rotation.z = Math.cos(elapsed * 0.06) * 0.08;
+          // Dynamic multi-axis rolling driven directly by scroll progress
+          const scrollRollX = currentScroll * Math.PI * 4.5;
+          const scrollRollY = currentScroll * Math.PI * 3.5;
+          const scrollRollZ = Math.sin(currentScroll * Math.PI * 2.0) * 0.35;
 
-          internalCore.rotation.y = -elapsed * 0.22;
+          coreMasterGroup.rotation.x = scrollRollX + Math.sin(elapsed * 0.08) * 0.18 - mouseY * 0.2;
+          coreMasterGroup.rotation.y = scrollRollY + elapsed * 0.12 + mouseX * 0.3;
+          coreMasterGroup.rotation.z = scrollRollZ + Math.cos(elapsed * 0.06) * 0.08;
+
+          internalCore.rotation.x = -scrollRollX * 1.2;
+          internalCore.rotation.y = -scrollRollY * 1.4 - elapsed * 0.22;
           internalCore.rotation.z = elapsed * 0.15;
-          kernelMesh.rotation.y = elapsed * 0.3;
+          kernelMesh.rotation.y = scrollRollY * 1.8 + elapsed * 0.3;
         }
 
         coreMasterGroup.position.set(targetCoreX, targetCoreY, targetCoreZ);
@@ -483,15 +488,16 @@ export default function Global3DCanvas({ theme = 'dark' }) {
         });
       }
 
-      // B. Orbiting Planetary Rings and Pucks
+      // B. Orbiting Planetary Rings and Pucks with Scroll Acceleration
       if (ringsGroup) {
         ringsGroup.position.set(targetCoreX, targetCoreY, targetCoreZ);
         const ringScale = coreMasterGroup.scale.x;
         ringsGroup.scale.set(ringScale, ringScale, ringScale);
 
         if (!prefersReducedMotion) {
-          orbitRing1.rotation.z = elapsed * 0.07;
-          orbitRing2.rotation.z = -elapsed * 0.09;
+          orbitRing1.rotation.z = elapsed * 0.07 + currentScroll * Math.PI * 2.5;
+          orbitRing1.rotation.x = Math.PI / 2.8 + Math.sin(currentScroll * Math.PI) * 0.4;
+          orbitRing2.rotation.z = -elapsed * 0.09 - currentScroll * Math.PI * 2.0;
         }
 
         // Move satellite pucks along Ring 1 track
@@ -520,7 +526,6 @@ export default function Global3DCanvas({ theme = 'dark' }) {
 
       // D. Sparkle Star Twinkle Animation
       if (sparkleStar && !prefersReducedMotion) {
-        sparkleStar.position.set(targetCoreX + 1.6, targetCoreY - 1.8, targetCoreZ + 0.5);
         sparkleStar.rotation.z = elapsed * 0.2;
         const starTwinkle = 0.7 + Math.sin(elapsed * 2.5) * 0.3;
         sparkleStar.scale.setScalar(starTwinkle);
@@ -533,11 +538,11 @@ export default function Global3DCanvas({ theme = 'dark' }) {
         dustParticles.rotation.x = Math.sin(elapsed * 0.01) * 0.04;
       }
 
-      // F. Camera Smooth Tracking
-      camera.position.x = Math.sin(currentScroll * Math.PI * 0.7) * 0.8 + mouseX * 0.25;
+      // F. Camera Smooth Tracking following the weaving core
+      camera.position.x = mouseX * 0.2 + targetCoreX * 0.15;
       camera.position.y = -currentScroll * 3.4 - mouseY * 0.2;
       camera.position.z = 8.8 - currentScroll * 2.2;
-      camera.lookAt(targetCoreX * 0.3, -currentScroll * 2.5, 0);
+      camera.lookAt(targetCoreX * 0.2, -currentScroll * 2.5, 0);
 
       renderer.render(scene, camera);
     };
