@@ -450,9 +450,9 @@ export default function Global3DCanvas({ theme = 'dark' }) {
 
       // Base X offset: on desktop, offset to right in hero matching the reference composition
       const isDesktop = window.innerWidth >= 1024;
-      const heroXOffset = isDesktop ? 2.5 : 0;
+      const heroXOffset = isDesktop ? (window.innerWidth >= 1440 ? 3.4 : 3.0) : 0;
       const targetCoreX = heroXOffset * Math.max(0, 1 - currentScroll * 1.6) + mouseX * 0.25;
-      const targetCoreY = (isDesktop ? 0.25 : 0) - currentScroll * 4.2 + Math.cos(elapsed * 0.5) * 0.05 - mouseY * 0.25;
+      const targetCoreY = (isDesktop ? 0.15 : 0) - currentScroll * 4.2 + Math.cos(elapsed * 0.5) * 0.05 - mouseY * 0.25;
       const targetCoreZ = -currentScroll * 7.5;
 
       // A. Dual-Axis Continuous Rotation & Breathing Scale of Geodesic Sphere

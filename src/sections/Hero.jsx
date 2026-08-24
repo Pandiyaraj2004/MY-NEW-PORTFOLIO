@@ -16,10 +16,10 @@ export default function Hero({ onOpenResume }) {
       className="relative min-h-screen flex items-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden z-10"
     >
       <div className="max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center">
           
-          {/* Left Column: Typography, Profile & Action CTAs (7 Cols on desktop) */}
-          <div className="lg:col-span-7 flex flex-col items-start text-left space-y-6">
+          {/* Left Column: Typography, Larger Profile & Action CTAs (6 Cols on desktop) */}
+          <div className="lg:col-span-6 xl:col-span-6 flex flex-col items-start text-left space-y-6">
             
             {/* Status Pill & Location */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel shadow-sm border border-[var(--border-subtle)]">
@@ -33,20 +33,20 @@ export default function Hero({ onOpenResume }) {
               </span>
             </div>
 
-            {/* Profile Avatar + Name Identity Row */}
-            <div className="flex items-center gap-4">
+            {/* Profile Avatar (Enlarged) + Name Identity Row */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-5">
               <div className="relative group flex-shrink-0">
-                <div className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-indigo-500 via-cyan-400 to-violet-500 opacity-50 blur-md group-hover:opacity-80 transition-opacity duration-300" />
-                <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full p-1 bg-gradient-to-b from-white/20 to-white/5 border border-white/20 shadow-xl overflow-hidden backdrop-blur-md">
+                <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-indigo-500 via-cyan-400 to-violet-500 opacity-60 blur-lg group-hover:opacity-90 transition-opacity duration-300" />
+                <div className="relative w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full p-1.5 bg-gradient-to-b from-white/30 to-white/10 border-2 border-white/30 shadow-2xl overflow-hidden backdrop-blur-md">
                   <img
                     src="/assets/pandiyaraj-profile.png"
                     alt="Pandiyaraj A"
-                    className="w-full h-full object-cover rounded-full filter contrast-105"
+                    className="w-full h-full object-cover rounded-full filter contrast-105 group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               </div>
 
-              <div>
+              <div className="space-y-1">
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-xs font-mono font-bold text-indigo-400 uppercase tracking-wider bg-indigo-500/10 px-2.5 py-0.5 rounded border border-indigo-500/20">
                     MCA Candidate
@@ -55,21 +55,19 @@ export default function Hero({ onOpenResume }) {
                     2024–2026
                   </span>
                 </div>
-                <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black font-display tracking-tight text-[var(--text-main)] leading-none">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black font-display tracking-tight text-[var(--text-main)] leading-none">
                   PANDIYARAJ <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-cyan-300 to-blue-400">A</span>
                 </h1>
+                <p className="text-xs sm:text-sm font-mono font-semibold text-cyan-400 pt-0.5">
+                  Full-Stack Developer | AI Applications
+                </p>
               </div>
             </div>
 
             {/* Subtitle & Professional Focus */}
-            <div className="space-y-2 max-w-2xl">
-              <p className="text-sm sm:text-base font-mono font-semibold text-cyan-400">
-                Full-Stack Developer | Python & JavaScript | AI-Powered Applications
-              </p>
-              <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed font-sans">
-                Engineering resilient software at the intersection of modern React frontends, robust Node.js/Python microservices, payment gateways, and applied AI models.
-              </p>
-            </div>
+            <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed font-sans max-w-xl">
+              Engineering resilient software at the intersection of modern React frontends, robust Node.js/Python microservices, payment gateways, and applied AI models.
+            </p>
 
             {/* CTAs */}
             <div className="flex flex-wrap items-center gap-3 pt-1">
@@ -100,12 +98,12 @@ export default function Hero({ onOpenResume }) {
             </div>
 
             {/* 4 Micro Proof Highlight Cards (2x2 Grid) */}
-            <ScrollRevealContainer className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full pt-2" stagger={0.07}>
+            <ScrollRevealContainer className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full pt-1" stagger={0.07}>
               {highlights.map((h, idx) => {
                 const Icon = h.icon;
                 return (
-                  <ScrollRevealItem key={idx} className="glass-panel p-3.5 rounded-xl border border-[var(--border-subtle)]">
-                    <div className={`flex items-center gap-2 text-xs font-mono font-bold ${h.color} mb-1`}>
+                  <ScrollRevealItem key={idx} className="glass-panel p-3 rounded-xl border border-[var(--border-subtle)]">
+                    <div className={`flex items-center gap-2 text-xs font-mono font-bold ${h.color} mb-0.5`}>
                       <Icon className="w-3.5 h-3.5" />
                       <span className="truncate">{h.label}</span>
                     </div>
@@ -119,9 +117,9 @@ export default function Hero({ onOpenResume }) {
           </div>
 
           {/* Right Column: Spacious dedicated zone for the 3D Geodesic Sphere on desktop */}
-          <div className="hidden lg:flex lg:col-span-5 h-[500px] pointer-events-none items-center justify-center relative">
+          <div className="hidden lg:flex lg:col-span-6 xl:col-span-6 h-[520px] pointer-events-none items-center justify-center relative">
             {/* Ambient circular halo giving contrast to 3D sphere */}
-            <div className="w-96 h-96 rounded-full bg-gradient-to-tr from-cyan-500/10 via-indigo-500/10 to-transparent blur-3xl" />
+            <div className="w-[420px] h-[420px] rounded-full bg-gradient-to-tr from-cyan-500/15 via-indigo-500/15 to-transparent blur-3xl" />
           </div>
 
         </div>
