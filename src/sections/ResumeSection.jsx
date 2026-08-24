@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import SectionHeader from '../components/SectionHeader';
-import { FileText, Download, ExternalLink, ShieldCheck } from 'lucide-react';
+import { FileText, Download, ExternalLink, ShieldCheck, ChevronUp, ChevronDown, Eye } from 'lucide-react';
 import { ScrollRevealContainer, ScrollRevealItem } from '../components/ScrollReveal';
 
 export default function ResumeSection({ onOpenModal }) {
+  const [isMinimized, setIsMinimized] = useState(false);
   const resumeUrl = "/assets/Pandiyaraj_A_Resume.pdf";
 
   const resumeHighlights = [
@@ -65,23 +66,60 @@ export default function ResumeSection({ onOpenModal }) {
                 href={resumeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-medium glass-panel text-[var(--text-main)] transition-colors"
+                className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-medium glass-panel text-[var(--text-main)] hover:text-indigo-400 transition-colors"
                 title="Open in new tab"
               >
                 <ExternalLink className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Open</span>
               </a>
+
+              {/* Minimize / Expand Button */}
+              <button
+                onClick={() => setIsMinimized(!isMinimized)}
+                className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-medium glass-panel text-[var(--text-main)] hover:text-indigo-400 transition-colors"
+                title={isMinimized ? "Expand Resume Preview" : "Minimize Resume Preview"}
+                aria-expanded={!isMinimized}
+              >
+                {isMinimized ? (
+                  <>
+                    <ChevronDown className="w-3.5 h-3.5 text-indigo-400" />
+                    <span>Expand</span>
+                  </>
+                ) : (
+                  <>
+                    <ChevronUp className="w-3.5 h-3.5" />
+                    <span>Minimize</span>
+                  </>
+                )}
+              </button>
             </div>
           </div>
 
           {/* Embedded Viewer (iframe) */}
-          <div className="relative w-full h-[550px] sm:h-[700px] bg-slate-950/20">
+          <div
+            className={`relative w-full transition-all duration-300 ease-in-out bg-slate-950/20 overflow-hidden ${
+              isMinimized ? 'h-0' : 'h-[550px] sm:h-[700px]'
+            }`}
+          >
             <iframe
               src={`${resumeUrl}#toolbar=0&navpanes=0`}
               title="Pandiyaraj A Resume Embedded Preview"
               className="w-full h-full border-0"
             />
           </div>
+
+          {/* Collapsed Notice when Minimized */}
+          {isMinimized && (
+            <div className="p-4 text-center border-t border-[var(--border-subtle)] bg-indigo-500/5">
+              <button
+                onClick={() => setIsMinimized(false)}
+                className="inline-flex items-center gap-2 text-xs font-medium text-indigo-400 hover:text-indigo-300 transition-colors"
+              >
+                <Eye className="w-3.5 h-3.5" />
+                <span>Resume preview is minimized. Click to expand preview.</span>
+              </button>
+            </div>
+          )}
         </ScrollRevealContainer>
       </div>
     </section>
