@@ -450,10 +450,10 @@ export default function Global3DCanvas({ theme = 'dark' }) {
 
       // Base X offset: on desktop, offset to right in hero matching the reference composition
       const isDesktop = window.innerWidth >= 1024;
-      const heroXOffset = isDesktop ? 1.75 : 0;
-      const targetCoreX = heroXOffset * (1 - currentScroll * 1.2) + mouseX * 0.25;
-      const targetCoreY = -currentScroll * 4.0 + Math.cos(elapsed * 0.5) * 0.05 - mouseY * 0.25;
-      const targetCoreZ = -currentScroll * 7.0;
+      const heroXOffset = isDesktop ? 2.5 : 0;
+      const targetCoreX = heroXOffset * Math.max(0, 1 - currentScroll * 1.6) + mouseX * 0.25;
+      const targetCoreY = (isDesktop ? 0.25 : 0) - currentScroll * 4.2 + Math.cos(elapsed * 0.5) * 0.05 - mouseY * 0.25;
+      const targetCoreZ = -currentScroll * 7.5;
 
       // A. Dual-Axis Continuous Rotation & Breathing Scale of Geodesic Sphere
       if (coreMasterGroup) {
@@ -511,7 +511,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
 
       // C. Floating HUD Panels Motion
       if (hudGroup) {
-        hudGroup.position.set(targetCoreX * 0.6, targetCoreY * 0.7, targetCoreZ * 0.8);
+        hudGroup.position.set(targetCoreX, targetCoreY, targetCoreZ);
         hudPanels.forEach((p, idx) => {
           const floatOffset = Math.sin(elapsed * 1.2 + idx * 1.5) * 0.08;
           p.mesh.position.y = p.basePos.y + floatOffset;
@@ -520,6 +520,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
 
       // D. Sparkle Star Twinkle Animation
       if (sparkleStar && !prefersReducedMotion) {
+        sparkleStar.position.set(targetCoreX + 1.6, targetCoreY - 1.8, targetCoreZ + 0.5);
         sparkleStar.rotation.z = elapsed * 0.2;
         const starTwinkle = 0.7 + Math.sin(elapsed * 2.5) * 0.3;
         sparkleStar.scale.setScalar(starTwinkle);
