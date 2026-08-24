@@ -11,19 +11,20 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isDark = theme === 'dark';
 
-    // 1. Scene & Depth Fog
+    // 1. Scene & Deep Atmosphere Fog
     const scene = new THREE.Scene();
-    const fogColor = isDark ? 0x030712 : 0xf8fafc;
-    scene.fog = new THREE.FogExp2(fogColor, 0.028);
+    // Deep navy/near-black in dark mode, clean warm slate in light mode
+    const fogColor = isDark ? 0x040814 : 0xf8fafc;
+    scene.fog = new THREE.FogExp2(fogColor, 0.024);
 
-    // 2. Camera setup
+    // 2. Camera Setup
     const camera = new THREE.PerspectiveCamera(
-      55,
+      50,
       window.innerWidth / window.innerHeight,
       0.1,
       100
     );
-    camera.position.set(0, 0, 9);
+    camera.position.set(0, 0, 8.5);
 
     // 3. WebGL Renderer
     let renderer;
@@ -36,224 +37,219 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setClearColor(fogColor, 1);
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = isDark ? 1.1 : 1.0;
       container.appendChild(renderer.domElement);
     } catch (e) {
       console.warn("WebGL initialization failed", e);
       return;
     }
 
-    // 4. Lighting System (Theme Aware)
+    // 4. Dramatic Directional & Ambient Lighting
+    // Ambient fill
     const ambientLight = new THREE.AmbientLight(
-      isDark ? 0x1e1b4b : 0xffffff,
-      isDark ? 1.4 : 2.2
+      isDark ? 0x0f172a : 0xffffff,
+      isDark ? 1.6 : 2.4
     );
     scene.add(ambientLight);
 
-    const pointLight1 = new THREE.PointLight(
-      isDark ? 0x06b6d4 : 0x2563eb,
-      isDark ? 3.5 : 2.0,
-      20
+    // Key Light from upper right side giving dramatic 3D shadows and specular highlights
+    const keyLight = new THREE.DirectionalLight(
+      isDark ? 0x38bdf8 : 0x3b82f6,
+      isDark ? 2.8 : 1.8
     );
-    pointLight1.position.set(2, 3, 4);
-    scene.add(pointLight1);
+    keyLight.position.set(5, 6, 4);
+    scene.add(keyLight);
 
-    const pointLight2 = new THREE.PointLight(
-      isDark ? 0x8b5cf6 : 0x4f46e5,
-      isDark ? 3.0 : 1.8,
-      20
+    // Subtle Cyan/Teal Rim Point Light
+    const rimLight = new THREE.PointLight(
+      isDark ? 0x06b6d4 : 0x0284c7,
+      isDark ? 3.2 : 2.0,
+      25
     );
-    pointLight2.position.set(-3, -2, 3);
-    scene.add(pointLight2);
+    rimLight.position.set(-4, -3, 3);
+    scene.add(rimLight);
 
-    // 5. MASTER ARCHITECTURAL SIGNATURE CORE
-    // Represents Full-Stack System Architecture, Payment Pipelines & AI Nodes
-    const masterCoreGroup = new THREE.Group();
-    scene.add(masterCoreGroup);
+    // Secondary Violet Core Light
+    const coreLight = new THREE.PointLight(
+      isDark ? 0x8b5cf6 : 0x6366f1,
+      isDark ? 2.5 : 1.5,
+      15
+    );
+    coreLight.position.set(0, 0, 0);
+    scene.add(coreLight);
 
-    // --- A. System Architecture Hubs (Full-Stack Layer) ---
-    // Central Gateway Hub (Central Spherical Node)
-    const centralGeo = new THREE.SphereGeometry(0.7, 32, 32);
-    const centralMat = new THREE.MeshStandardMaterial({
-      color: isDark ? 0x0f172a : 0x312e81,
-      emissive: isDark ? 0x0284c7 : 0x4338ca,
-      emissiveIntensity: isDark ? 0.6 : 0.4,
-      roughness: 0.2,
-      metalness: 0.8,
-      wireframe: true
+    // 5. MASTER 3D GEODESIC FACETED SPHERE OBJECT
+    const coreMasterGroup = new THREE.Group();
+    scene.add(coreMasterGroup);
+
+    // Base Geodesic Sphere Geometry (Detail level 2 for optimal faceted triangulated lattice)
+    const sphereRadius = 2.1;
+    const geodesicGeo = new THREE.IcosahedronGeometry(sphereRadius, 2);
+
+    // Extract unique vertices for nodes and traversal
+    const posAttr = geodesicGeo.attributes.position;
+    const vertexMap = new Map();
+    const uniqueVertices = [];
+
+    for (let i = 0; i < posAttr.count; i++) {
+      const key = `${posAttr.getX(i).toFixed(3)},${posAttr.getY(i).toFixed(3)},${posAttr.getZ(i).toFixed(3)}`;
+      if (!vertexMap.has(key)) {
+        const v = new THREE.Vector3(posAttr.getX(i), posAttr.getY(i), posAttr.getZ(i));
+        vertexMap.set(key, uniqueVertices.length);
+        uniqueVertices.push(v);
+      }
+    }
+
+    // --- A. Translucent Dark Glass / Faceted Panels ---
+    // Creates the semi-solid faceted glass gem look from reference
+    const glassMat = new THREE.MeshPhysicalMaterial({
+      color: isDark ? 0x0a1628 : 0xe0e7ff,
+      emissive: isDark ? 0x03213a : 0x312e81,
+      emissiveIntensity: isDark ? 0.35 : 0.15,
+      roughness: 0.15,
+      metalness: 0.6,
+      transmission: 0.45,
+      transparent: true,
+      opacity: isDark ? 0.28 : 0.32,
+      side: THREE.DoubleSide,
+      depthWrite: false
     });
-    const centralHub = new THREE.Mesh(centralGeo, centralMat);
-    masterCoreGroup.add(centralHub);
+    const glassMesh = new THREE.Mesh(geodesicGeo, glassMat);
+    coreMasterGroup.add(glassMesh);
 
-    // Inner glowing kernel
-    const kernelGeo = new THREE.IcosahedronGeometry(0.35, 1);
-    const kernelMat = new THREE.MeshBasicMaterial({
-      color: isDark ? 0x38bdf8 : 0x06b6d4,
+    // --- B. Crisp Glowing Triangulated Lattice Edges ---
+    const wireframeGeo = new THREE.WireframeGeometry(geodesicGeo);
+    const wireframeMat = new THREE.LineBasicMaterial({
+      color: isDark ? 0x38bdf8 : 0x2563eb,
+      transparent: true,
+      opacity: isDark ? 0.42 : 0.55
+    });
+    const latticeLines = new THREE.LineSegments(wireframeGeo, wireframeMat);
+    coreMasterGroup.add(latticeLines);
+
+    // --- C. Glowing Emissive Nodes (Teal / Cyan) at Lattice Junctions ---
+    // Prominent Anchor Nodes (Varying in scale and brightness)
+    const anchorIndices = [0, 4, 11, 15, 22, 28, 35, 42, 50, 58];
+    const anchorNodes = [];
+
+    const anchorNodeMat = new THREE.MeshStandardMaterial({
+      color: isDark ? 0x22d3ee : 0x0284c7,
+      emissive: isDark ? 0x06b6d4 : 0x2563eb,
+      emissiveIntensity: isDark ? 1.4 : 0.8,
+      roughness: 0.2,
+      metalness: 0.8
+    });
+
+    anchorIndices.forEach((idx, i) => {
+      if (idx < uniqueVertices.length) {
+        const v = uniqueVertices[idx];
+        const size = (i % 3 === 0 ? 0.085 : 0.06) * (1 + (i % 2) * 0.2);
+        const nodeGeo = new THREE.SphereGeometry(size, 16, 16);
+        const nodeMesh = new THREE.Mesh(nodeGeo, anchorNodeMat);
+        nodeMesh.position.copy(v);
+        coreMasterGroup.add(nodeMesh);
+        anchorNodes.push({ mesh: nodeMesh, baseScale: size, phase: i * 0.7 });
+      }
+    });
+
+    // Secondary Minor Junction Dots (Instanced points cloud on all vertices)
+    const junctionGeo = new THREE.BufferGeometry();
+    const junctionPositions = new Float32Array(uniqueVertices.length * 3);
+    for (let i = 0; i < uniqueVertices.length; i++) {
+      junctionPositions[i * 3] = uniqueVertices[i].x;
+      junctionPositions[i * 3 + 1] = uniqueVertices[i].y;
+      junctionPositions[i * 3 + 2] = uniqueVertices[i].z;
+    }
+    junctionGeo.setAttribute('position', new THREE.BufferAttribute(junctionPositions, 3));
+
+    const junctionMat = new THREE.PointsMaterial({
+      color: isDark ? 0x38bdf8 : 0x1d4ed8,
+      size: isDark ? 0.045 : 0.04,
+      transparent: true,
+      opacity: isDark ? 0.85 : 0.75
+    });
+    const junctionPoints = new THREE.Points(junctionGeo, junctionMat);
+    coreMasterGroup.add(junctionPoints);
+
+    // --- D. Thin Planetary Orbiting Ring ---
+    // Encircling the faceted sphere at an offset planetary angle
+    const ringRadius = 3.35;
+    const ringGeo = new THREE.TorusGeometry(ringRadius, 0.016, 16, 128);
+    const ringMat = new THREE.MeshBasicMaterial({
+      color: isDark ? 0x06b6d4 : 0x4338ca,
+      transparent: true,
+      opacity: isDark ? 0.45 : 0.55
+    });
+    const orbitRing = new THREE.Mesh(ringGeo, ringMat);
+    orbitRing.rotation.x = Math.PI / 2.7;
+    orbitRing.rotation.y = Math.PI / 8;
+    scene.add(orbitRing);
+
+    // Faint dashed satellite companion track on the ring
+    const satMarkerGeo = new THREE.SphereGeometry(0.045, 12, 12);
+    const satMarkerMat = new THREE.MeshBasicMaterial({
+      color: isDark ? 0x38bdf8 : 0x2563eb
+    });
+    const satelliteMarker = new THREE.Mesh(satMarkerGeo, satMarkerMat);
+    scene.add(satelliteMarker);
+
+    // --- E. Internal AI/ML Breathing Core ---
+    const innerCoreGeo = new THREE.OctahedronGeometry(0.7, 1);
+    const innerCoreMat = new THREE.MeshBasicMaterial({
+      color: isDark ? 0x8b5cf6 : 0x6366f1,
       wireframe: true,
       transparent: true,
-      opacity: isDark ? 0.9 : 0.7
+      opacity: isDark ? 0.45 : 0.35
     });
-    const kernelMesh = new THREE.Mesh(kernelGeo, kernelMat);
-    masterCoreGroup.add(kernelMesh);
+    const innerCoreMesh = new THREE.Mesh(innerCoreGeo, innerCoreMat);
+    coreMasterGroup.add(innerCoreMesh);
 
-    // Distributed Service Nodes (Frontend, API Gateway, Auth, Database, ML Engine, Payment Ledger)
-    const serviceNodesData = [
-      { pos: [2.2, 1.1, 0.4], color: isDark ? 0x38bdf8 : 0x0284c7, size: 0.22, name: "Frontend UI" },
-      { pos: [-2.0, 1.3, -0.3], color: isDark ? 0x818cf8 : 0x4f46e5, size: 0.24, name: "API Gateway" },
-      { pos: [1.8, -1.5, 0.6], color: isDark ? 0x10b981 : 0x059669, size: 0.20, name: "Database Ledger" },
-      { pos: [-1.7, -1.4, -0.5], color: isDark ? 0xf59e0b : 0xd97706, size: 0.22, name: "Payment Webhook" },
-      { pos: [0.0, 2.3, -0.6], color: isDark ? 0xc084fc : 0x7c3aed, size: 0.25, name: "AI Inference" },
-      { pos: [0.0, -2.2, 0.8], color: isDark ? 0x06b6d4 : 0x0891b2, size: 0.20, name: "Cache / RAG" }
-    ];
-
-    const serviceNodeMeshes = [];
-    serviceNodesData.forEach((node) => {
-      const nodeGeo = new THREE.SphereGeometry(node.size, 16, 16);
-      const nodeMat = new THREE.MeshStandardMaterial({
-        color: node.color,
-        emissive: node.color,
-        emissiveIntensity: isDark ? 0.7 : 0.5,
-        roughness: 0.3,
-        metalness: 0.7
-      });
-      const mesh = new THREE.Mesh(nodeGeo, nodeMat);
-      mesh.position.set(...node.pos);
-      masterCoreGroup.add(mesh);
-      serviceNodeMeshes.push({ mesh, basePos: new THREE.Vector3(...node.pos), color: node.color });
-    });
-
-    // --- B. Architectural Pipeline Edges (Connecting Vectors) ---
-    const edgePairs = [
-      [0, 1], [0, 2], [1, 3], [1, 4], [2, 3], [2, 5], [4, 5],
-      // Connect to central hub
-      [-1, 0], [-1, 1], [-1, 2], [-1, 3], [-1, 4], [-1, 5]
-    ];
-
-    const pipelineLineMat = new THREE.LineBasicMaterial({
-      color: isDark ? 0x6366f1 : 0x3b82f6,
-      transparent: true,
-      opacity: isDark ? 0.35 : 0.45
-    });
-
-    const pipelineLinePositions = [];
-    edgePairs.forEach(([from, to]) => {
-      const p1 = from === -1 ? new THREE.Vector3(0, 0, 0) : serviceNodeMeshes[from].basePos;
-      const p2 = to === -1 ? new THREE.Vector3(0, 0, 0) : serviceNodeMeshes[to].basePos;
-      pipelineLinePositions.push(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
-    });
-
-    const pipelineLineGeo = new THREE.BufferGeometry();
-    pipelineLineGeo.setAttribute(
-      'position',
-      new THREE.Float32BufferAttribute(pipelineLinePositions, 3)
-    );
-    const pipelineLines = new THREE.LineSegments(pipelineLineGeo, pipelineLineMat);
-    masterCoreGroup.add(pipelineLines);
-
-    // --- C. Payment & Transaction Flow Pulses (Fintech Layer) ---
-    // Emissive packets that travel along pipeline edges
-    const pulseCount = 8;
-    const pulseGeo = new THREE.SphereGeometry(0.08, 12, 12);
-    const pulseMat = new THREE.MeshBasicMaterial({
-      color: isDark ? 0x38bdf8 : 0x0284c7,
+    // --- F. Payment / Fintech Flow Pulse ---
+    // A single clean light pulse traveling along specific geodesic lattice edges
+    const pulseTrailGeo = new THREE.SphereGeometry(0.065, 12, 12);
+    const pulseTrailMat = new THREE.MeshBasicMaterial({
+      color: isDark ? 0x22d3ee : 0x0284c7,
       transparent: true,
       opacity: 0.95
     });
+    const paymentPulse = new THREE.Mesh(pulseTrailGeo, pulseTrailMat);
+    coreMasterGroup.add(paymentPulse);
 
-    const pulses = [];
-    for (let i = 0; i < pulseCount; i++) {
-      const pMesh = new THREE.Mesh(pulseGeo, pulseMat);
-      const edge = edgePairs[i % edgePairs.length];
-      masterCoreGroup.add(pMesh);
-      pulses.push({
-        mesh: pMesh,
-        fromIdx: edge[0],
-        toIdx: edge[1],
-        progress: Math.random(),
-        speed: 0.006 + Math.random() * 0.008
-      });
+    // Sequence of connected vertices for smooth continuous loop traversal
+    const pathIndices = [0, 4, 12, 28, 35, 42, 50, 22, 15, 11, 0];
+    let pulseSegmentProgress = 0;
+    let currentPathIndex = 0;
+
+    // --- G. Soft Ambient Depth Particles ---
+    // Scattered behind and around the sphere for depth & volume parallax
+    const ambientParticleCount = window.innerWidth < 768 ? 160 : 280;
+    const ambientGeo = new THREE.BufferGeometry();
+    const ambientPosArray = new Float32Array(ambientParticleCount * 3);
+
+    for (let i = 0; i < ambientParticleCount; i++) {
+      const i3 = i * 3;
+      const r = 4.0 + Math.random() * 9.0;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.acos(Math.random() * 2 - 1);
+
+      ambientPosArray[i3] = r * Math.sin(phi) * Math.cos(theta);
+      ambientPosArray[i3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+      ambientPosArray[i3 + 2] = r * Math.cos(phi) - 2.5;
     }
 
-    // --- D. AI Synaptic Mesh Layer ---
-    // Neural connection ring surrounding the architecture
-    const ringGeo = new THREE.TorusGeometry(3.2, 0.025, 16, 64);
-    const ringMat = new THREE.MeshBasicMaterial({
-      color: isDark ? 0x8b5cf6 : 0x6366f1,
+    ambientGeo.setAttribute('position', new THREE.BufferAttribute(ambientPosArray, 3));
+    const ambientMat = new THREE.PointsMaterial({
+      color: isDark ? 0x38bdf8 : 0x3b82f6,
+      size: isDark ? 0.038 : 0.032,
       transparent: true,
-      opacity: isDark ? 0.25 : 0.35,
-      wireframe: true
-    });
-    const neuralRing = new THREE.Mesh(ringGeo, ringMat);
-    neuralRing.rotation.x = Math.PI / 3;
-    masterCoreGroup.add(neuralRing);
-
-    // --- E. Data Science & Structured Coordinate Particles ---
-    const particleCount = window.innerWidth < 768 ? 200 : 380;
-    const dataParticleGeo = new THREE.BufferGeometry();
-    const pPosArray = new Float32Array(particleCount * 3);
-    const pColorArray = new Float32Array(particleCount * 3);
-
-    const baseCoordinates = [];
-    const gridCoordinates = [];
-    const neuralCoordinates = [];
-
-    const c1 = isDark ? new THREE.Color(0x38bdf8) : new THREE.Color(0x2563eb);
-    const c2 = isDark ? new THREE.Color(0x818cf8) : new THREE.Color(0x7c3aed);
-    const c3 = isDark ? new THREE.Color(0x34d399) : new THREE.Color(0x059669);
-
-    for (let i = 0; i < particleCount; i++) {
-      const idx = i * 3;
-
-      // 1. Ambient Volumetric Cloud
-      const radius = 3.5 + Math.random() * 10;
-      const u = Math.random();
-      const v = Math.random();
-      const theta = u * 2.0 * Math.PI;
-      const phi = Math.acos(2.0 * v - 1.0);
-      const bx = radius * Math.sin(phi) * Math.cos(theta);
-      const by = radius * Math.sin(phi) * Math.sin(theta);
-      const bz = radius * Math.cos(phi) - 3;
-
-      pPosArray[idx] = bx;
-      pPosArray[idx + 1] = by;
-      pPosArray[idx + 2] = bz;
-      baseCoordinates.push({ x: bx, y: by, z: bz });
-
-      // 2. Structured Data Grid Formation (SQL Table / Matrix)
-      const cols = 16;
-      const gx = ((i % cols) - cols / 2) * 0.7;
-      const gy = (Math.floor((i % 80) / cols) - 2.5) * 0.7;
-      const gz = (Math.floor(i / 80) - 2) * 1.8;
-      gridCoordinates.push({ x: gx, y: gy, z: gz });
-
-      // 3. Neural Synapse Arc Formation
-      const angle = (i / particleCount) * Math.PI * 6;
-      const nx = Math.cos(angle) * (3.0 + (i % 5) * 0.3);
-      const ny = Math.sin(angle) * (2.2 + (i % 5) * 0.2);
-      const nz = (i / particleCount) * -10 + 2;
-      neuralCoordinates.push({ x: nx, y: ny, z: nz });
-
-      // Palette coloring
-      const t = Math.random();
-      const col = t < 0.5 ? c1.clone().lerp(c2, t * 2) : c2.clone().lerp(c3, (t - 0.5) * 2);
-      pColorArray[idx] = col.r;
-      pColorArray[idx + 1] = col.g;
-      pColorArray[idx + 2] = col.b;
-    }
-
-    dataParticleGeo.setAttribute('position', new THREE.BufferAttribute(pPosArray, 3));
-    dataParticleGeo.setAttribute('color', new THREE.BufferAttribute(pColorArray, 3));
-
-    const dataParticleMat = new THREE.PointsMaterial({
-      size: isDark ? 0.075 : 0.065,
-      vertexColors: true,
-      transparent: true,
-      opacity: isDark ? 0.75 : 0.65,
+      opacity: isDark ? 0.45 : 0.35,
       fog: true
     });
-    const dataParticles = new THREE.Points(dataParticleGeo, dataParticleMat);
-    scene.add(dataParticles);
+    const ambientParticles = new THREE.Points(ambientGeo, ambientMat);
+    scene.add(ambientParticles);
 
-    // 6. Interaction & Reactivity State
+    // 6. Interaction & Scroll Reactivity
     let mouseX = 0;
     let mouseY = 0;
     let targetMouseX = 0;
@@ -289,7 +285,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
 
     window.addEventListener('resize', handleResize);
 
-    // 7. Render Animation Loop
+    // 7. Animation Loop
     let animationFrameId;
     const clock = new THREE.Clock();
 
@@ -297,118 +293,107 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       animationFrameId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // Smooth interpolation for scroll and mouse parallax
-      currentScroll += (targetScroll - currentScroll) * 0.07;
-      mouseX += (targetMouseX - mouseX) * 0.05;
-      mouseY += (targetMouseY - mouseY) * 0.05;
+      // Smooth interpolation for scroll and cursor parallax
+      currentScroll += (targetScroll - currentScroll) * 0.065;
+      mouseX += (targetMouseX - mouseX) * 0.045;
+      mouseY += (targetMouseY - mouseY) * 0.045;
 
-      // A. Multi-Axis Idle Rotation of Master Core
-      if (masterCoreGroup) {
+      // A. Dual-Axis Idle Rotation of the Core
+      if (coreMasterGroup) {
         if (!prefersReducedMotion) {
-          masterCoreGroup.rotation.y = elapsed * 0.12 + mouseX * 0.3;
-          masterCoreGroup.rotation.x = Math.sin(elapsed * 0.08) * 0.15 - mouseY * 0.2;
-          masterCoreGroup.rotation.z = Math.cos(elapsed * 0.06) * 0.08;
+          coreMasterGroup.rotation.y = elapsed * 0.14 + mouseX * 0.35;
+          coreMasterGroup.rotation.x = Math.sin(elapsed * 0.09) * 0.2 - mouseY * 0.25;
+          coreMasterGroup.rotation.z = Math.cos(elapsed * 0.07) * 0.06;
 
-          kernelMesh.rotation.y = -elapsed * 0.3;
-          kernelMesh.rotation.z = elapsed * 0.2;
-          neuralRing.rotation.z = elapsed * 0.05;
+          innerCoreMesh.rotation.y = -elapsed * 0.25;
+          innerCoreMesh.rotation.z = elapsed * 0.18;
         }
 
-        // Spatial Handoff on Scroll:
-        // Hero: Center and prominent
-        // Mid sections: Drifts and scales to frame content
-        // Later sections: Recedes gracefully into ambient backdrop
-        masterCoreGroup.position.x = Math.sin(currentScroll * Math.PI) * 1.8 + mouseX * 0.3;
-        masterCoreGroup.position.y = -currentScroll * 4.5 + Math.cos(elapsed * 0.8) * 0.08 - mouseY * 0.3;
-        masterCoreGroup.position.z = -currentScroll * 8.0;
+        // Spatial Drift on Scroll (Drifts gracefully down & back to frame section content)
+        coreMasterGroup.position.x = Math.sin(currentScroll * Math.PI) * 1.6 + mouseX * 0.25;
+        coreMasterGroup.position.y = -currentScroll * 4.2 + Math.cos(elapsed * 0.6) * 0.06 - mouseY * 0.25;
+        coreMasterGroup.position.z = -currentScroll * 7.5;
 
-        // Core opacity and scale modulation
-        const coreScale = Math.max(0.45, 1 - currentScroll * 0.55);
-        masterCoreGroup.scale.set(coreScale, coreScale, coreScale);
+        // Subtle scale transition across page depth
+        const sphereScale = Math.max(0.48, 1 - currentScroll * 0.52);
+        coreMasterGroup.scale.set(sphereScale, sphereScale, sphereScale);
 
-        // Breathing Node Light Pulsation
-        const breath = 0.85 + Math.sin(elapsed * 2.0) * 0.15;
-        centralMat.emissiveIntensity = (isDark ? 0.6 : 0.4) * breath;
-
-        serviceNodeMeshes.forEach((node, i) => {
-          const nodePulse = 0.8 + Math.sin(elapsed * 2.5 + i * 1.2) * 0.2;
-          node.mesh.scale.set(nodePulse, nodePulse, nodePulse);
+        // Breathing Pulse on Anchor Nodes (opacity/intensity)
+        anchorNodes.forEach((node) => {
+          const pulse = 0.85 + Math.sin(elapsed * 2.2 + node.phase) * 0.2;
+          node.mesh.scale.setScalar(pulse);
         });
+
+        // AI Inner Core Breathing
+        const coreBreath = 0.35 + Math.sin(elapsed * 1.8) * 0.15;
+        innerCoreMat.opacity = isDark ? coreBreath : coreBreath * 0.8;
       }
 
-      // B. Update Payment & Transaction Pulses (Fintech Layer)
-      pulses.forEach((pulse) => {
-        // Accelerate pulse speed when scrolling past payments/fintech sections
-        const isFintechSection = currentScroll >= 0.4 && currentScroll <= 0.75;
-        const activeSpeed = isFintechSection ? pulse.speed * 2.2 : pulse.speed;
-
-        pulse.progress = (pulse.progress + activeSpeed) % 1.0;
-
-        const p1 = pulse.fromIdx === -1 ? new THREE.Vector3(0, 0, 0) : serviceNodeMeshes[pulse.fromIdx].basePos;
-        const p2 = pulse.toIdx === -1 ? new THREE.Vector3(0, 0, 0) : serviceNodeMeshes[pulse.toIdx].basePos;
-
-        pulse.mesh.position.lerpVectors(p1, p2, pulse.progress);
-        pulse.mesh.scale.setScalar(isFintechSection ? 1.4 : 1.0);
-      });
-
-      // C. Morph Data Particles Across Scroll Journey Phases
-      const positions = dataParticleGeo.attributes.position.array;
-
-      for (let i = 0; i < particleCount; i++) {
-        const idx = i * 3;
-        const base = baseCoordinates[i];
-        const grid = gridCoordinates[i];
-        const neural = neuralCoordinates[i];
-
-        let targetX = base.x;
-        let targetY = base.y;
-        let targetZ = base.z;
-
-        if (currentScroll < 0.25) {
-          // Phase 1 (Hero / About): Ambient Organic Fluid
-          targetX = base.x + Math.sin(elapsed * 0.4 + i * 0.1) * 0.15;
-          targetY = base.y + Math.cos(elapsed * 0.4 + i * 0.1) * 0.15;
-          targetZ = base.z;
-        } else if (currentScroll < 0.55) {
-          // Phase 2 (Education, Skills, Data Science): Structured 3D SQL / Matrix Grid
-          const weight = (currentScroll - 0.25) / 0.3;
-          const wave = Math.sin(elapsed * 1.5 + (i % 16) * 0.4) * 0.25;
-          targetX = THREE.MathUtils.lerp(base.x, grid.x, weight);
-          targetY = THREE.MathUtils.lerp(base.y, grid.y + wave, weight);
-          targetZ = THREE.MathUtils.lerp(base.z, grid.z, weight);
-        } else if (currentScroll < 0.8) {
-          // Phase 3 (Payments, Projects, AI): Neural Synapse Arc
-          const weight = (currentScroll - 0.55) / 0.25;
-          const pulseWave = Math.cos(elapsed * 1.2 + i * 0.2) * 0.3;
-          targetX = THREE.MathUtils.lerp(grid.x, neural.x, weight);
-          targetY = THREE.MathUtils.lerp(grid.y, neural.y + pulseWave, weight);
-          targetZ = THREE.MathUtils.lerp(grid.z, neural.z, weight);
-        } else {
-          // Phase 4 (Strengths, Certs, Horizon, Contact): Expansive Cosmic Horizon
-          targetX = base.x * 1.3 + Math.sin(elapsed * 0.3 + i * 0.1) * 0.3;
-          targetY = base.y * 1.3 + Math.cos(elapsed * 0.3 + i * 0.1) * 0.3;
-          targetZ = base.z * 1.2;
+      // B. Independent Planetary Ring Rotation & Satellite Motion
+      if (orbitRing) {
+        if (!prefersReducedMotion) {
+          orbitRing.rotation.z = elapsed * 0.08;
+          orbitRing.rotation.x = Math.PI / 2.7 + Math.sin(elapsed * 0.05) * 0.08;
         }
 
-        // Smooth physical convergence
-        positions[idx] += (targetX - positions[idx]) * 0.06;
-        positions[idx + 1] += (targetY - positions[idx + 1]) * 0.06;
-        positions[idx + 2] += (targetZ - positions[idx + 2]) * 0.06;
-      }
-      dataParticleGeo.attributes.position.needsUpdate = true;
+        orbitRing.position.copy(coreMasterGroup.position);
+        orbitRing.scale.copy(coreMasterGroup.scale);
 
-      // D. Camera Drift and Focus
-      camera.position.x = Math.sin(currentScroll * Math.PI * 0.8) * 1.2 + mouseX * 0.4;
-      camera.position.y = -currentScroll * 3.8 - mouseY * 0.3;
-      camera.position.z = 9.0 - currentScroll * 3.0;
-      camera.lookAt(0, -currentScroll * 2.8, 0);
+        // Satellite position along the orbit ring
+        const satAngle = elapsed * 0.35;
+        const currentRingRadius = ringRadius * coreMasterGroup.scale.x;
+        const satLocal = new THREE.Vector3(
+          Math.cos(satAngle) * currentRingRadius,
+          Math.sin(satAngle) * currentRingRadius,
+          0
+        );
+        satLocal.applyEuler(orbitRing.rotation);
+        satelliteMarker.position.copy(coreMasterGroup.position).add(satLocal);
+        satelliteMarker.scale.copy(coreMasterGroup.scale);
+      }
+
+      // C. Payment & Transaction Flow Pulse Traversal
+      if (uniqueVertices.length > 0) {
+        const fromIdx = pathIndices[currentPathIndex % pathIndices.length];
+        const toIdx = pathIndices[(currentPathIndex + 1) % pathIndices.length];
+
+        const isPaymentSection = currentScroll >= 0.35 && currentScroll <= 0.7;
+        const pulseSpeed = isPaymentSection ? 0.035 : 0.016;
+
+        pulseSegmentProgress += pulseSpeed;
+
+        if (pulseSegmentProgress >= 1.0) {
+          pulseSegmentProgress = 0;
+          currentPathIndex = (currentPathIndex + 1) % pathIndices.length;
+        }
+
+        if (fromIdx < uniqueVertices.length && toIdx < uniqueVertices.length) {
+          paymentPulse.position.lerpVectors(
+            uniqueVertices[fromIdx],
+            uniqueVertices[toIdx],
+            pulseSegmentProgress
+          );
+        }
+      }
+
+      // D. Slow Ambient Particle Parallax
+      if (ambientParticles && !prefersReducedMotion) {
+        ambientParticles.rotation.y = elapsed * 0.02;
+        ambientParticles.rotation.x = Math.sin(elapsed * 0.015) * 0.05;
+      }
+
+      // E. Camera Framing
+      camera.position.x = Math.sin(currentScroll * Math.PI * 0.75) * 1.1 + mouseX * 0.3;
+      camera.position.y = -currentScroll * 3.5 - mouseY * 0.25;
+      camera.position.z = 8.5 - currentScroll * 2.5;
+      camera.lookAt(0, -currentScroll * 2.6, 0);
 
       renderer.render(scene, camera);
     };
 
     animate();
 
-    // 8. Proper Cleanup
+    // 8. Cleanup & Disposal
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('scroll', handleScroll);
@@ -419,23 +404,26 @@ export default function Global3DCanvas({ theme = 'dark' }) {
         container.removeChild(renderer.domElement);
       }
 
-      // Dispose Geometries & Materials
-      centralGeo.dispose();
-      centralMat.dispose();
-      kernelGeo.dispose();
-      kernelMat.dispose();
-      pipelineLineGeo.dispose();
-      pipelineLineMat.dispose();
-      pulseGeo.dispose();
-      pulseMat.dispose();
+      geodesicGeo.dispose();
+      glassMat.dispose();
+      wireframeGeo.dispose();
+      wireframeMat.dispose();
+      anchorNodeMat.dispose();
+      junctionGeo.dispose();
+      junctionMat.dispose();
       ringGeo.dispose();
       ringMat.dispose();
-      dataParticleGeo.dispose();
-      dataParticleMat.dispose();
+      satMarkerGeo.dispose();
+      satMarkerMat.dispose();
+      innerCoreGeo.dispose();
+      innerCoreMat.dispose();
+      pulseTrailGeo.dispose();
+      pulseTrailMat.dispose();
+      ambientGeo.dispose();
+      ambientMat.dispose();
 
-      serviceNodeMeshes.forEach((node) => {
-        node.mesh.geometry.dispose();
-        node.mesh.material.dispose();
+      anchorNodes.forEach((n) => {
+        n.mesh.geometry.dispose();
       });
 
       if (renderer) renderer.dispose();
