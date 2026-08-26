@@ -22,13 +22,14 @@ export default function Navbar({ theme = 'dark', onToggleTheme, onOpenResume }) 
   ];
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
+    let rAFId = null;
+    const sections = navLinks.map(l => l.href.substring(1));
 
-      // Section spy
-      const sections = navLinks.map(l => l.href.substring(1));
-      const scrollPos = window.scrollY + 250;
+    const checkActiveSection = () => {
+      const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+      setIsScrolled(scrollY > 30);
 
+      const scrollPos = scrollY + 250;
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
         if (el && el.offsetTop <= scrollPos) {
@@ -38,16 +39,29 @@ export default function Navbar({ theme = 'dark', onToggleTheme, onOpenResume }) 
       }
     };
 
+    const handleScroll = () => {
+      if (rAFId) return;
+      rAFId = requestAnimationFrame(() => {
+        checkActiveSection();
+        rAFId = null;
+      });
+    };
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    checkActiveSection();
+
+    return () => {
+      if (rAFId) cancelAnimationFrame(rAFId);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
           isScrolled
-            ? 'glass-nav py-2.5 shadow-xl'
+            ? 'glass-nav py-2.5 shadow-lg'
             : 'bg-transparent py-4'
         }`}
       >
@@ -61,7 +75,9 @@ export default function Navbar({ theme = 'dark', onToggleTheme, onOpenResume }) 
               <img
                 src="/assets/pandiyaraj-profile.png"
                 alt="Pandiyaraj A"
-                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                loading="lazy"
+                decoding="async"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
               <div className="absolute inset-0 bg-indigo-500/10 pointer-events-none" />
             </div>

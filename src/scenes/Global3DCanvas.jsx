@@ -9,9 +9,11 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     if (!container) return;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+    const isLowTier = isMobile || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4);
     const isDark = theme === 'dark';
 
-    // 1. Scene & Deep Navy / Soft Light Fog
+    // 1. Scene & Fog Setup
     const scene = new THREE.Scene();
     const fogColor = isDark ? 0x040814 : 0xf8fafc;
     scene.fog = new THREE.FogExp2(fogColor, 0.022);
@@ -21,20 +23,24 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       48,
       window.innerWidth / window.innerHeight,
       0.1,
-      100
+      80
     );
     camera.position.set(0, 0, 8.8);
 
-    // 3. WebGL Renderer
+    // 3. Ultra-Optimized WebGL Renderer
     let renderer;
     try {
       renderer = new THREE.WebGLRenderer({
-        antialias: true,
+        antialias: !isLowTier,
         alpha: true,
-        powerPreference: 'high-performance'
+        powerPreference: 'high-performance',
+        precision: isLowTier ? 'mediump' : 'highp',
+        stencil: false,
+        depth: true
       });
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      // Cap pixel ratio to 1.0 on mobile/low-end devices to save 75%+ GPU fragment load
+      renderer.setPixelRatio(isLowTier ? 1.0 : Math.min(window.devicePixelRatio, 1.25));
       renderer.setClearColor(fogColor, 1);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = isDark ? 1.15 : 1.0;
@@ -44,37 +50,26 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       return;
     }
 
-    // 4. Dramatic Multi-Point Lighting
+    // 4. Balanced Lighting (Optimized for minimal draw calls)
     const ambientLight = new THREE.AmbientLight(
       isDark ? 0x0c1527 : 0xffffff,
-      isDark ? 1.8 : 2.5
+      isDark ? 2.0 : 2.5
     );
     scene.add(ambientLight);
 
-    // Key Light from upper-left (highlighting metallic struts & glass panels)
     const keyLight = new THREE.DirectionalLight(
       isDark ? 0x60a5fa : 0x3b82f6,
-      isDark ? 3.0 : 2.0
+      isDark ? 2.8 : 2.0
     );
     keyLight.position.set(-5, 6, 4);
     scene.add(keyLight);
 
-    // Rim light from upper-right
     const rimLight = new THREE.DirectionalLight(
       isDark ? 0x2dd4bf : 0x0284c7,
-      isDark ? 2.5 : 1.5
+      isDark ? 2.2 : 1.5
     );
     rimLight.position.set(5, 4, 3);
     scene.add(rimLight);
-
-    // Intense Cyan Core Point Light inside the sphere
-    const internalCoreLight = new THREE.PointLight(
-      isDark ? 0x06b6d4 : 0x0ea5e9,
-      isDark ? 4.5 : 2.8,
-      18
-    );
-    internalCoreLight.position.set(0, 0, 0);
-    scene.add(internalCoreLight);
 
     // 5. MASTER GEODESIC CORE GROUP
     const coreMasterGroup = new THREE.Group();
@@ -98,24 +93,22 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       }
     }
 
-    // --- A. Translucent Glass Facet Panels ---
-    const glassMat = new THREE.MeshPhysicalMaterial({
+    // --- A. Crystalline Facet Panels (Fast Standard Material instead of heavy physical transmission) ---
+    const glassMat = new THREE.MeshStandardMaterial({
       color: isDark ? 0x0d1e36 : 0xdbeafe,
       emissive: isDark ? 0x041c33 : 0x1e3a8a,
       emissiveIntensity: isDark ? 0.4 : 0.15,
-      roughness: 0.12,
-      metalness: 0.2,
-      transmission: 0.55,
+      roughness: 0.18,
+      metalness: 0.35,
       transparent: true,
-      opacity: isDark ? 0.32 : 0.38,
-      ior: 1.45,
+      opacity: isDark ? 0.38 : 0.42,
       side: THREE.DoubleSide,
       depthWrite: false
     });
     const glassMesh = new THREE.Mesh(geodesicGeo, glassMat);
     coreMasterGroup.add(glassMesh);
 
-    // --- B. Metallic / Chrome Structural Lattice Wireframe ---
+    // --- B. Structural Lattice Wireframe ---
     const wireframeGeo = new THREE.WireframeGeometry(geodesicGeo);
     const wireframeMat = new THREE.LineBasicMaterial({
       color: isDark ? 0x93c5fd : 0x334155,
@@ -125,12 +118,12 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     const latticeLines = new THREE.LineSegments(wireframeGeo, wireframeMat);
     coreMasterGroup.add(latticeLines);
 
-    // --- C. Metallic Ball Joints at All Vertices ---
-    const ballJointGeo = new THREE.SphereGeometry(0.065, 16, 16);
+    // --- C. Metallic Ball Joints at All Vertices (Optimized 8x8 segments) ---
+    const ballJointGeo = new THREE.SphereGeometry(0.065, 8, 8);
     const ballJointMat = new THREE.MeshStandardMaterial({
       color: isDark ? 0x94a3b8 : 0x475569,
-      metalness: 0.9,
-      roughness: 0.15
+      metalness: 0.85,
+      roughness: 0.2
     });
 
     uniqueVertices.forEach((v) => {
@@ -139,10 +132,10 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       coreMasterGroup.add(ball);
     });
 
-    // --- D. Active Emissive Glowing Nodes (Teal / Cyan) on Selected Vertices ---
-    const activeIndices = [0, 2, 4, 7, 9, 11]; // ~15-20% of vertices
+    // --- D. Active Emissive Glowing Nodes ---
+    const activeIndices = [0, 2, 4, 7, 9, 11];
     const emissiveNodes = [];
-
+    const emissiveGeo = new THREE.SphereGeometry(0.095, 8, 8);
     const emissiveMat = new THREE.MeshBasicMaterial({
       color: isDark ? 0x22d3ee : 0x0284c7
     });
@@ -150,15 +143,15 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     // Soft glow sprite texture generator
     const createGlowTexture = () => {
       const canvas = document.createElement('canvas');
-      canvas.width = 64;
-      canvas.height = 64;
+      canvas.width = 32;
+      canvas.height = 32;
       const ctx = canvas.getContext('2d');
-      const grad = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+      const grad = ctx.createRadialGradient(16, 16, 0, 16, 16, 16);
       grad.addColorStop(0, 'rgba(56, 189, 248, 1)');
-      grad.addColorStop(0.35, 'rgba(6, 182, 212, 0.6)');
+      grad.addColorStop(0.4, 'rgba(6, 182, 212, 0.5)');
       grad.addColorStop(1, 'rgba(6, 182, 212, 0)');
       ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, 64, 64);
+      ctx.fillRect(0, 0, 32, 32);
       return new THREE.CanvasTexture(canvas);
     };
     const glowTexture = createGlowTexture();
@@ -172,12 +165,10 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     activeIndices.forEach((idx, i) => {
       if (idx < uniqueVertices.length) {
         const v = uniqueVertices[idx];
-        const nodeGeo = new THREE.SphereGeometry(0.095, 16, 16);
-        const nodeMesh = new THREE.Mesh(nodeGeo, emissiveMat);
+        const nodeMesh = new THREE.Mesh(emissiveGeo, emissiveMat);
         nodeMesh.position.copy(v);
         coreMasterGroup.add(nodeMesh);
 
-        // Volumetric Glow Halo Sprite
         const sprite = new THREE.Sprite(glowSpriteMat);
         sprite.position.copy(v);
         sprite.scale.set(0.65, 0.65, 1);
@@ -187,12 +178,12 @@ export default function Global3DCanvas({ theme = 'dark' }) {
           mesh: nodeMesh,
           sprite,
           phase: i * 1.1,
-          speed: 1.5 + (i % 3) * 0.4
+          speed: 1.4 + (i % 3) * 0.3
         });
       }
     });
 
-    // --- E. Internal Circuit Core & Glowing Octahedron ---
+    // --- E. Internal Circuit Core & Kernel ---
     const internalGeo = new THREE.OctahedronGeometry(0.9, 0);
     const internalMat = new THREE.MeshBasicMaterial({
       color: isDark ? 0x38bdf8 : 0x0284c7,
@@ -203,8 +194,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     const internalCore = new THREE.Mesh(internalGeo, internalMat);
     coreMasterGroup.add(internalCore);
 
-    // Inner glowing sphere kernel
-    const kernelGeo = new THREE.SphereGeometry(0.35, 16, 16);
+    const kernelGeo = new THREE.SphereGeometry(0.35, 8, 8);
     const kernelMat = new THREE.MeshBasicMaterial({
       color: isDark ? 0x22d3ee : 0x0ea5e9,
       transparent: true,
@@ -213,13 +203,13 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     const kernelMesh = new THREE.Mesh(kernelGeo, kernelMat);
     coreMasterGroup.add(kernelMesh);
 
-    // --- F. Orbiting Planetary Rings ---
+    // --- F. Orbiting Planetary Rings (Segment optimized) ---
     const ringsGroup = new THREE.Group();
     scene.add(ringsGroup);
 
-    // Outer Primary Ring (Cyan Glowing Torus)
+    const ringSegments = isLowTier ? 32 : 64;
     const ring1Radius = 3.4;
-    const ring1Geo = new THREE.TorusGeometry(ring1Radius, 0.015, 16, 128);
+    const ring1Geo = new THREE.TorusGeometry(ring1Radius, 0.015, 8, ringSegments);
     const ring1Mat = new THREE.MeshBasicMaterial({
       color: isDark ? 0x38bdf8 : 0x0284c7,
       transparent: true,
@@ -232,8 +222,8 @@ export default function Global3DCanvas({ theme = 'dark' }) {
 
     // Orbiting Satellite Dials / Pucks on Ring 1
     const satPucks = [];
-    const puckCount = 3;
-    const puckGeo = new THREE.TorusGeometry(0.12, 0.02, 12, 24);
+    const puckCount = isLowTier ? 2 : 3;
+    const puckGeo = new THREE.TorusGeometry(0.12, 0.02, 6, 16);
     const puckMat = new THREE.MeshBasicMaterial({
       color: isDark ? 0x22d3ee : 0x2563eb
     });
@@ -248,9 +238,8 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       });
     }
 
-    // Inner Secondary Ring (Soft Violet / Blue Torus)
     const ring2Radius = 3.05;
-    const ring2Geo = new THREE.TorusGeometry(ring2Radius, 0.012, 16, 128);
+    const ring2Geo = new THREE.TorusGeometry(ring2Radius, 0.012, 8, ringSegments);
     const ring2Mat = new THREE.MeshBasicMaterial({
       color: isDark ? 0x818cf8 : 0x4f46e5,
       transparent: true,
@@ -261,67 +250,49 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     orbitRing2.rotation.y = -Math.PI / 8;
     ringsGroup.add(orbitRing2);
 
-    // --- G. Floating Holographic HUD Panels (Background Layer) ---
+    // --- G. Floating Holographic HUD Panels ---
     const hudGroup = new THREE.Group();
     scene.add(hudGroup);
 
     const createHUDTexture = (type) => {
       const canvas = document.createElement('canvas');
-      canvas.width = 128;
-      canvas.height = 64;
+      canvas.width = 64;
+      canvas.height = 32;
       const ctx = canvas.getContext('2d');
 
       ctx.strokeStyle = isDark ? '#38bdf8' : '#2563eb';
       ctx.fillStyle = isDark ? 'rgba(6, 182, 212, 0.15)' : 'rgba(37, 99, 235, 0.1)';
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.2;
 
-      // Card border
-      ctx.strokeRect(4, 4, 120, 56);
-      ctx.fillRect(4, 4, 120, 56);
+      ctx.strokeRect(2, 2, 60, 28);
+      ctx.fillRect(2, 2, 60, 28);
 
       if (type === 'bars') {
-        // Mini bar chart
-        const heights = [18, 32, 24, 42, 28, 38];
+        const heights = [8, 16, 12, 20, 14, 18];
         ctx.fillStyle = isDark ? '#22d3ee' : '#3b82f6';
         heights.forEach((h, i) => {
-          ctx.fillRect(15 + i * 16, 52 - h, 10, h);
+          ctx.fillRect(8 + i * 8, 26 - h, 5, h);
         });
-      } else if (type === 'nodes') {
-        // Mini node graph
-        ctx.fillStyle = isDark ? '#38bdf8' : '#4f46e5';
-        ctx.beginPath();
-        ctx.arc(25, 32, 5, 0, Math.PI * 2);
-        ctx.arc(64, 18, 4, 0, Math.PI * 2);
-        ctx.arc(64, 46, 4, 0, Math.PI * 2);
-        ctx.arc(100, 32, 5, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.moveTo(25, 32);
-        ctx.lineTo(64, 18);
-        ctx.lineTo(100, 32);
-        ctx.lineTo(64, 46);
-        ctx.lineTo(25, 32);
-        ctx.stroke();
       } else {
-        // Mini waveform line
         ctx.beginPath();
-        ctx.moveTo(12, 32);
-        ctx.lineTo(30, 32);
-        ctx.lineTo(42, 14);
-        ctx.lineTo(54, 48);
-        ctx.lineTo(68, 20);
-        ctx.lineTo(82, 38);
-        ctx.lineTo(96, 32);
-        ctx.lineTo(116, 32);
+        ctx.moveTo(6, 16);
+        ctx.lineTo(18, 16);
+        ctx.lineTo(26, 6);
+        ctx.lineTo(34, 24);
+        ctx.lineTo(44, 10);
+        ctx.lineTo(58, 16);
         ctx.stroke();
       }
 
       return new THREE.CanvasTexture(canvas);
     };
 
-    const hudConfigs = [
+    const hudConfigs = isMobile ? [
+      { pos: [3.2, 2.0, -1.5], rot: [-0.1, -0.3, 0.05], type: 'bars' },
+      { pos: [-3.0, -1.8, -1.0], rot: [0.15, 0.4, -0.1], type: 'wave' }
+    ] : [
       { pos: [3.8, 2.2, -1.5], rot: [-0.1, -0.3, 0.05], type: 'bars' },
-      { pos: [-3.6, -1.8, -1.0], rot: [0.15, 0.4, -0.1], type: 'nodes' },
+      { pos: [-3.6, -1.8, -1.0], rot: [0.15, 0.4, -0.1], type: 'bars' },
       { pos: [-3.4, 2.5, -2.0], rot: [-0.2, 0.35, 0.1], type: 'wave' },
       { pos: [3.5, -2.4, -1.2], rot: [0.2, -0.35, -0.05], type: 'bars' }
     ];
@@ -344,36 +315,8 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       hudPanels.push({ mesh: panel, basePos: new THREE.Vector3(...cfg.pos) });
     });
 
-    // --- H. 4-Point Star-Flare Sparkle Accent ---
-    const createStarGeometry = () => {
-      const shape = new THREE.Shape();
-      const rOuter = 0.32;
-      const rInner = 0.05;
-      for (let i = 0; i < 8; i++) {
-        const radius = i % 2 === 0 ? rOuter : rInner;
-        const angle = (i * Math.PI) / 4;
-        const x = Math.cos(angle) * radius;
-        const y = Math.sin(angle) * radius;
-        if (i === 0) shape.moveTo(x, y);
-        else shape.lineTo(x, y);
-      }
-      shape.closePath();
-      return new THREE.ShapeGeometry(shape);
-    };
-
-    const starGeo = createStarGeometry();
-    const starMat = new THREE.MeshBasicMaterial({
-      color: isDark ? 0x93c5fd : 0x3b82f6,
-      transparent: true,
-      opacity: isDark ? 0.8 : 0.6,
-      side: THREE.DoubleSide
-    });
-    const sparkleStar = new THREE.Mesh(starGeo, starMat);
-    sparkleStar.position.set(3.8, -2.6, 0.5);
-    scene.add(sparkleStar);
-
-    // --- I. Ambient Volumetric Dust Particles ---
-    const particleCount = window.innerWidth < 768 ? 140 : 260;
+    // --- H. Ambient Volumetric Dust Particles (Lightweight) ---
+    const particleCount = isLowTier ? 40 : 110;
     const dustGeo = new THREE.BufferGeometry();
     const dustPositions = new Float32Array(particleCount * 3);
 
@@ -410,7 +353,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
     };
 
-    if (!prefersReducedMotion) {
+    if (!prefersReducedMotion && !isMobile) {
       window.addEventListener('mousemove', handleMouseMove, { passive: true });
     }
 
@@ -430,35 +373,50 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setPixelRatio(isLowTier ? 1.0 : Math.min(window.devicePixelRatio, 1.25));
     };
 
     window.addEventListener('resize', handleResize);
 
-    // 7. Render Animation Loop
+    // 7. Render Animation Loop with Tab Visibility Pause
     let animationFrameId;
     const clock = new THREE.Clock();
+    let isTabVisible = true;
+
+    const handleVisibilityChange = () => {
+      isTabVisible = document.visibilityState === 'visible';
+      if (isTabVisible && !animationFrameId) {
+        clock.start();
+        animate();
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
     const animate = () => {
+      if (!isTabVisible) {
+        animationFrameId = null;
+        return;
+      }
       animationFrameId = requestAnimationFrame(animate);
       const elapsed = clock.getElapsedTime();
 
-      // Smooth interpolation for scroll and cursor parallax
+      // Smooth interpolation
       currentScroll += (targetScroll - currentScroll) * 0.065;
-      mouseX += (targetMouseX - mouseX) * 0.045;
-      mouseY += (targetMouseY - mouseY) * 0.045;
+      if (!isMobile) {
+        mouseX += (targetMouseX - mouseX) * 0.045;
+        mouseY += (targetMouseY - mouseY) * 0.045;
+      }
 
-      // Dynamic Right-to-Left and Left-to-Right Horizontal Weaving along Scroll Journey
+      // Dynamic Horizontal Weaving along Scroll Journey
       const swayAmplitude = window.innerWidth >= 1024 ? 2.5 : 1.1;
       const horizontalSway = Math.sin(currentScroll * Math.PI * 4.0) * swayAmplitude;
       const targetCoreX = horizontalSway + mouseX * 0.25;
       const targetCoreY = -currentScroll * 4.0 + Math.cos(elapsed * 0.5) * 0.05 - mouseY * 0.25;
       const targetCoreZ = -currentScroll * 7.0;
 
-      // A. Dual-Axis Continuous Rotation & Scroll-Driven Rolling of Geodesic Sphere
+      // A. Dual-Axis Continuous Rotation & Scroll-Driven Rolling
       if (coreMasterGroup) {
         if (!prefersReducedMotion) {
-          // Dynamic multi-axis rolling driven directly by scroll progress
           const scrollRollX = currentScroll * Math.PI * 4.5;
           const scrollRollY = currentScroll * Math.PI * 3.5;
           const scrollRollZ = Math.sin(currentScroll * Math.PI * 2.0) * 0.35;
@@ -475,12 +433,11 @@ export default function Global3DCanvas({ theme = 'dark' }) {
 
         coreMasterGroup.position.set(targetCoreX, targetCoreY, targetCoreZ);
 
-        // Subtle breathing scale
         const breath = 1.0 + Math.sin(elapsed * 1.4) * 0.02;
         const scrollScale = Math.max(0.48, 1 - currentScroll * 0.52) * breath;
         coreMasterGroup.scale.set(scrollScale, scrollScale, scrollScale);
 
-        // Independent Staggered Pulsing on Emissive Nodes
+        // Staggered Pulsing on Emissive Nodes
         emissiveNodes.forEach((n) => {
           const p = 0.8 + Math.sin(elapsed * n.speed + n.phase) * 0.35;
           n.mesh.scale.setScalar(p);
@@ -488,7 +445,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
         });
       }
 
-      // B. Orbiting Planetary Rings and Pucks with Scroll Acceleration
+      // B. Orbiting Planetary Rings and Pucks
       if (ringsGroup) {
         ringsGroup.position.set(targetCoreX, targetCoreY, targetCoreZ);
         const ringScale = coreMasterGroup.scale.x;
@@ -500,7 +457,6 @@ export default function Global3DCanvas({ theme = 'dark' }) {
           orbitRing2.rotation.z = -elapsed * 0.09 - currentScroll * Math.PI * 2.0;
         }
 
-        // Move satellite pucks along Ring 1 track
         satPucks.forEach((puck) => {
           const angle = elapsed * puck.speed + puck.offset;
           const currentRadius = ring1Radius;
@@ -524,21 +480,12 @@ export default function Global3DCanvas({ theme = 'dark' }) {
         });
       }
 
-      // D. Sparkle Star Twinkle Animation
-      if (sparkleStar && !prefersReducedMotion) {
-        sparkleStar.rotation.z = elapsed * 0.2;
-        const starTwinkle = 0.7 + Math.sin(elapsed * 2.5) * 0.3;
-        sparkleStar.scale.setScalar(starTwinkle);
-        starMat.opacity = (isDark ? 0.75 : 0.5) * starTwinkle;
-      }
-
-      // E. Ambient Dust Parallax
+      // D. Ambient Dust Parallax
       if (dustParticles && !prefersReducedMotion) {
         dustParticles.rotation.y = elapsed * 0.015;
-        dustParticles.rotation.x = Math.sin(elapsed * 0.01) * 0.04;
       }
 
-      // F. Camera Smooth Tracking following the weaving core
+      // E. Camera Smooth Tracking
       camera.position.x = mouseX * 0.2 + targetCoreX * 0.15;
       camera.position.y = -currentScroll * 3.4 - mouseY * 0.2;
       camera.position.z = 8.8 - currentScroll * 2.2;
@@ -549,9 +496,10 @@ export default function Global3DCanvas({ theme = 'dark' }) {
 
     animate();
 
-    // 8. Cleanup & Disposal
+    // 8. Cleanup & Resource Disposal
     return () => {
-      cancelAnimationFrame(animationFrameId);
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
@@ -566,6 +514,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       wireframeMat.dispose();
       ballJointGeo.dispose();
       ballJointMat.dispose();
+      emissiveGeo.dispose();
       emissiveMat.dispose();
       glowSpriteMat.dispose();
       glowTexture.dispose();
@@ -579,8 +528,6 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       ring2Mat.dispose();
       puckGeo.dispose();
       puckMat.dispose();
-      starGeo.dispose();
-      starMat.dispose();
       dustGeo.dispose();
       dustMat.dispose();
 
@@ -593,7 +540,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       ref={mountRef}
       aria-hidden="true"
       className="fixed inset-0 pointer-events-none z-0 overflow-hidden"
-      style={{ opacity: 0.96 }}
+      style={{ opacity: 0.96, transform: 'translateZ(0)' }}
     />
   );
 }

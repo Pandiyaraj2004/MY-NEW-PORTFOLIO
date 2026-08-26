@@ -1,20 +1,56 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: -100, y: -100 });
-  const [isPointer, setIsPointer] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
+  const dotRef = useRef(null);
+  const auraRef = useRef(null);
 
   useEffect(() => {
-    // Only enable on non-touch devices with fine pointers
-    if (window.matchMedia('(pointer: coarse)').matches) return;
+    // Only enable on desktop with fine pointer devices
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia('(pointer: coarse)').matches || window.innerWidth < 768) return;
+
+    let mouseX = -100;
+    let mouseY = -100;
+    let auraX = -100;
+    let auraY = -100;
+    let isVisible = false;
+    let isPointer = false;
+    let rAFId = null;
+
+    const render = () => {
+      // Smooth lerp for aura follower
+      auraX += (mouseX - auraX) * 0.2;
+      auraY += (mouseY - auraY) * 0.2;
+
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${mouseX - 3}px, ${mouseY - 3}px, 0)`;
+        dotRef.current.style.opacity = isVisible ? '1' : '0';
+      }
+
+      if (auraRef.current) {
+        auraRef.current.style.transform = `translate3d(${auraX - 16}px, ${auraY - 16}px, 0) scale(${isPointer ? 1.5 : 1})`;
+        auraRef.current.style.opacity = isVisible ? '1' : '0';
+        if (isPointer) {
+          auraRef.current.style.borderColor = 'rgba(129, 140, 248, 0.8)';
+          auraRef.current.style.backgroundColor = 'rgba(99, 102, 241, 0.12)';
+        } else {
+          auraRef.current.style.borderColor = 'rgba(129, 140, 248, 0.35)';
+          auraRef.current.style.backgroundColor = 'transparent';
+        }
+      }
+
+      rAFId = requestAnimationFrame(render);
+    };
+
+    rAFId = requestAnimationFrame(render);
 
     const handleMouseMove = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      if (!isVisible) setIsVisible(true);
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (!isVisible) isVisible = true;
 
       const target = e.target;
-      const isClickable = target && (
+      const clickable = target && (
         target.tagName === 'BUTTON' ||
         target.tagName === 'A' ||
         target.closest('button') ||
@@ -22,45 +58,53 @@ export default function CustomCursor() {
         target.getAttribute('role') === 'button' ||
         target.classList.contains('clickable')
       );
-      setIsPointer(!!isClickable);
+      isPointer = !!clickable;
     };
 
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
+    const handleMouseLeave = () => {
+      isVisible = false;
+    };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseleave', handleMouseLeave);
-    document.addEventListener('mouseenter', handleMouseEnter);
+    const handleMouseEnter = () => {
+      isVisible = true;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    document.addEventListener('mouseleave', handleMouseLeave, { passive: true });
+    document.addEventListener('mouseenter', handleMouseEnter, { passive: true });
 
     return () => {
+      if (rAFId) cancelAnimationFrame(rAFId);
       window.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseleave', handleMouseLeave);
       document.removeEventListener('mouseenter', handleMouseEnter);
     };
-  }, [isVisible]);
-
-  if (!isVisible) return null;
+  }, []);
 
   return (
     <>
       {/* Small dot follower */}
       <div
-        className="fixed pointer-events-none z-50 rounded-full bg-cyan-400 mix-blend-screen transition-transform duration-75 ease-out"
+        ref={dotRef}
+        aria-hidden="true"
+        className="fixed top-0 left-0 pointer-events-none z-50 rounded-full bg-cyan-400 mix-blend-screen will-change-transform"
         style={{
           width: '6px',
           height: '6px',
-          transform: `translate3d(${position.x - 3}px, ${position.y - 3}px, 0)`,
+          opacity: 0,
+          transform: 'translate3d(-100px, -100px, 0)'
         }}
       />
       {/* Outer subtle aura */}
       <div
-        className={`fixed pointer-events-none z-50 rounded-full border border-indigo-400/40 transition-all duration-300 ease-out ${
-          isPointer ? 'scale-150 bg-indigo-500/10 border-indigo-400' : 'scale-100'
-        }`}
+        ref={auraRef}
+        aria-hidden="true"
+        className="fixed top-0 left-0 pointer-events-none z-50 rounded-full border border-indigo-400/40 will-change-transform transition-colors duration-150 ease-out"
         style={{
           width: '32px',
           height: '32px',
-          transform: `translate3d(${position.x - 16}px, ${position.y - 16}px, 0)`,
+          opacity: 0,
+          transform: 'translate3d(-100px, -100px, 0)'
         }}
       />
     </>

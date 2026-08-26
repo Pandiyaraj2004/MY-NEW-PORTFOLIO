@@ -30,13 +30,17 @@ export default function Hero({ onOpenResume }) {
 
         {/* Profile Portrait & 3D Depth Aura (Enlarged) */}
         <div className="relative mb-9 group">
-          <div className="absolute -inset-5 rounded-full bg-gradient-to-r from-indigo-500 via-cyan-400 to-violet-500 opacity-60 blur-2xl group-hover:opacity-90 transition-opacity duration-500" />
+          <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-indigo-500 via-cyan-400 to-violet-500 opacity-60 blur-xl group-hover:opacity-85 transition-opacity duration-300 pointer-events-none transform translate-z-0" />
 
-          <div className="relative w-60 h-60 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full p-2.5 bg-gradient-to-b from-white/35 to-white/10 border-2 border-white/40 shadow-2xl backdrop-blur-md overflow-hidden">
+          <div className="relative w-60 h-60 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full p-2.5 bg-gradient-to-b from-white/30 to-white/10 border-2 border-white/40 shadow-2xl overflow-hidden">
             <img
               src="/assets/pandiyaraj-profile.png"
               alt="Pandiyaraj A"
-              className="w-full h-full object-cover rounded-full filter contrast-105 group-hover:scale-105 transition-transform duration-500"
+              width="320"
+              height="320"
+              loading="eager"
+              decoding="async"
+              className="w-full h-full object-cover rounded-full filter contrast-105 group-hover:scale-105 transition-transform duration-300"
             />
           </div>
 

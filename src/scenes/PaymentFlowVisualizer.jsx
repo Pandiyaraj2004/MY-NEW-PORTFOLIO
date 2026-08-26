@@ -92,17 +92,19 @@ export default function PaymentFlowVisualizer() {
     }
   ];
 
-  // Auto-step timer
+  // Auto-step timer with tab visibility check
   useEffect(() => {
     let interval;
     if (isAutoPlaying) {
       interval = setInterval(() => {
-        setCurrentStep((prev) => {
-          if (prev >= 6) {
-            return 1;
-          }
-          return prev + 1;
-        });
+        if (document.visibilityState === 'visible') {
+          setCurrentStep((prev) => {
+            if (prev >= 6) {
+              return 1;
+            }
+            return prev + 1;
+          });
+        }
       }, 3000);
     }
     return () => clearInterval(interval);
@@ -122,10 +124,10 @@ export default function PaymentFlowVisualizer() {
   }, [currentStep, flowType]);
 
   return (
-    <div className="w-full bg-slate-950/90 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-2xl shadow-2xl relative overflow-hidden">
+    <div className="w-full bg-slate-950 border border-slate-800/80 rounded-2xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
       {/* Background ambient gradient glow */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-72 h-72 bg-indigo-500/10 rounded-full blur-xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-72 h-72 bg-cyan-500/10 rounded-full blur-xl pointer-events-none" />
 
       {/* Header */}
       <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 mb-8 border-b border-slate-800/70 pb-6 relative z-10">

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 export function ScrollRevealContainer({ 
   children, 
   className = "", 
-  stagger = 0.09,
+  stagger = 0.06,
   delay = 0 
 }) {
   const containerVariants = {
@@ -23,7 +23,7 @@ export function ScrollRevealContainer({
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-40px" }}
+      viewport={{ once: true, margin: "0px" }}
       className={className}
     >
       {children}
@@ -33,27 +33,25 @@ export function ScrollRevealContainer({
 
 export function ScrollRevealItem({ 
   children, 
-  className = "",
+  className = "", 
   direction = "up"
 }) {
-  const yOffset = direction === "up" ? 22 : direction === "down" ? -22 : 0;
-  const xOffset = direction === "left" ? 22 : direction === "right" ? -22 : 0;
+  const yOffset = direction === "up" ? 14 : direction === "down" ? -14 : 0;
+  const xOffset = direction === "left" ? 14 : direction === "right" ? -14 : 0;
 
   const itemVariants = {
     hidden: { 
       opacity: 0, 
       y: yOffset, 
-      x: xOffset,
-      scale: 0.97
+      x: xOffset
     },
     visible: {
       opacity: 1,
       y: 0,
       x: 0,
-      scale: 1,
       transition: {
-        duration: 0.42,
-        ease: [0.25, 0.1, 0.25, 1.0]
+        duration: 0.35,
+        ease: "easeOut"
       }
     }
   };
@@ -74,15 +72,15 @@ export default function ScrollReveal({
   delay = 0,
   direction = "up"
 }) {
-  const yOffset = direction === "up" ? 24 : direction === "down" ? -24 : 0;
-  const xOffset = direction === "left" ? 24 : direction === "right" ? -24 : 0;
+  const yOffset = direction === "up" ? 16 : direction === "down" ? -16 : 0;
+  const xOffset = direction === "left" ? 16 : direction === "right" ? -16 : 0;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: yOffset, x: xOffset, scale: 0.97 }}
-      whileInView={{ opacity: 1, y: 0, x: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.45, delay, ease: [0.25, 0.1, 0.25, 1.0] }}
+      initial={{ opacity: 0, y: yOffset, x: xOffset }}
+      whileInView={{ opacity: 1, y: 0, x: 0 }}
+      viewport={{ once: true, margin: "0px" }}
+      transition={{ duration: 0.38, delay, ease: "easeOut" }}
       className={`stagger-card ${className}`}
     >
       {children}
