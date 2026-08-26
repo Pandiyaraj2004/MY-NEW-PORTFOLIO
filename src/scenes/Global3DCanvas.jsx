@@ -410,7 +410,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       // Dynamic Horizontal Weaving along Scroll Journey (Offset left by 0.5)
       const swayAmplitude = window.innerWidth >= 1024 ? 2.5 : 1.1;
       const horizontalSway = Math.sin(currentScroll * Math.PI * 4.0) * swayAmplitude;
-      const targetCoreX = horizontalSway + mouseX * 0.25 - 0.2;
+      const targetCoreX = horizontalSway + mouseX * 0.25;
       const targetCoreY = -currentScroll * 4.0 + Math.cos(elapsed * 0.5) * 0.05 - mouseY * 0.25;
       const targetCoreZ = -currentScroll * 7.0;
 
