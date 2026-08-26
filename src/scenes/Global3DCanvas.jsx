@@ -75,8 +75,8 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     const coreMasterGroup = new THREE.Group();
     scene.add(coreMasterGroup);
 
-    // Base Icosahedron Geodesic Geometry
-    const sphereRadius = 2.15;
+    // Base Icosahedron Geodesic Geometry (Scaled down for clean framing)
+    const sphereRadius = 1.75;
     const geodesicGeo = new THREE.IcosahedronGeometry(sphereRadius, 1);
 
     // Extract unique vertices for ball joints and emissive nodes
@@ -119,7 +119,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     coreMasterGroup.add(latticeLines);
 
     // --- C. Metallic Ball Joints at All Vertices (Optimized 8x8 segments) ---
-    const ballJointGeo = new THREE.SphereGeometry(0.065, 8, 8);
+    const ballJointGeo = new THREE.SphereGeometry(0.055, 8, 8);
     const ballJointMat = new THREE.MeshStandardMaterial({
       color: isDark ? 0x94a3b8 : 0x475569,
       metalness: 0.85,
@@ -135,7 +135,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     // --- D. Active Emissive Glowing Nodes ---
     const activeIndices = [0, 2, 4, 7, 9, 11];
     const emissiveNodes = [];
-    const emissiveGeo = new THREE.SphereGeometry(0.095, 8, 8);
+    const emissiveGeo = new THREE.SphereGeometry(0.08, 8, 8);
     const emissiveMat = new THREE.MeshBasicMaterial({
       color: isDark ? 0x22d3ee : 0x0284c7
     });
@@ -171,7 +171,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
 
         const sprite = new THREE.Sprite(glowSpriteMat);
         sprite.position.copy(v);
-        sprite.scale.set(0.65, 0.65, 1);
+        sprite.scale.set(0.55, 0.55, 1);
         coreMasterGroup.add(sprite);
 
         emissiveNodes.push({
@@ -184,7 +184,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     });
 
     // --- E. Internal Circuit Core & Kernel ---
-    const internalGeo = new THREE.OctahedronGeometry(0.9, 0);
+    const internalGeo = new THREE.OctahedronGeometry(0.72, 0);
     const internalMat = new THREE.MeshBasicMaterial({
       color: isDark ? 0x38bdf8 : 0x0284c7,
       wireframe: true,
@@ -194,7 +194,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     const internalCore = new THREE.Mesh(internalGeo, internalMat);
     coreMasterGroup.add(internalCore);
 
-    const kernelGeo = new THREE.SphereGeometry(0.35, 8, 8);
+    const kernelGeo = new THREE.SphereGeometry(0.28, 8, 8);
     const kernelMat = new THREE.MeshBasicMaterial({
       color: isDark ? 0x22d3ee : 0x0ea5e9,
       transparent: true,
@@ -208,8 +208,8 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     scene.add(ringsGroup);
 
     const ringSegments = isLowTier ? 32 : 64;
-    const ring1Radius = 3.4;
-    const ring1Geo = new THREE.TorusGeometry(ring1Radius, 0.015, 8, ringSegments);
+    const ring1Radius = 2.75;
+    const ring1Geo = new THREE.TorusGeometry(ring1Radius, 0.014, 8, ringSegments);
     const ring1Mat = new THREE.MeshBasicMaterial({
       color: isDark ? 0x38bdf8 : 0x0284c7,
       transparent: true,
@@ -223,7 +223,7 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     // Orbiting Satellite Dials / Pucks on Ring 1
     const satPucks = [];
     const puckCount = isLowTier ? 2 : 3;
-    const puckGeo = new THREE.TorusGeometry(0.12, 0.02, 6, 16);
+    const puckGeo = new THREE.TorusGeometry(0.1, 0.018, 6, 16);
     const puckMat = new THREE.MeshBasicMaterial({
       color: isDark ? 0x22d3ee : 0x2563eb
     });
@@ -238,8 +238,8 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       });
     }
 
-    const ring2Radius = 3.05;
-    const ring2Geo = new THREE.TorusGeometry(ring2Radius, 0.012, 8, ringSegments);
+    const ring2Radius = 2.45;
+    const ring2Geo = new THREE.TorusGeometry(ring2Radius, 0.011, 8, ringSegments);
     const ring2Mat = new THREE.MeshBasicMaterial({
       color: isDark ? 0x818cf8 : 0x4f46e5,
       transparent: true,
@@ -288,13 +288,13 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     };
 
     const hudConfigs = isMobile ? [
-      { pos: [3.2, 2.0, -1.5], rot: [-0.1, -0.3, 0.05], type: 'bars' },
-      { pos: [-3.0, -1.8, -1.0], rot: [0.15, 0.4, -0.1], type: 'wave' }
+      { pos: [2.5, 1.6, -1.5], rot: [-0.1, -0.3, 0.05], type: 'bars' },
+      { pos: [-2.4, -1.4, -1.0], rot: [0.15, 0.4, -0.1], type: 'wave' }
     ] : [
-      { pos: [3.8, 2.2, -1.5], rot: [-0.1, -0.3, 0.05], type: 'bars' },
-      { pos: [-3.6, -1.8, -1.0], rot: [0.15, 0.4, -0.1], type: 'bars' },
-      { pos: [-3.4, 2.5, -2.0], rot: [-0.2, 0.35, 0.1], type: 'wave' },
-      { pos: [3.5, -2.4, -1.2], rot: [0.2, -0.35, -0.05], type: 'bars' }
+      { pos: [3.0, 1.8, -1.5], rot: [-0.1, -0.3, 0.05], type: 'bars' },
+      { pos: [-2.9, -1.5, -1.0], rot: [0.15, 0.4, -0.1], type: 'bars' },
+      { pos: [-2.7, 2.0, -2.0], rot: [-0.2, 0.35, 0.1], type: 'wave' },
+      { pos: [2.8, -1.9, -1.2], rot: [0.2, -0.35, -0.05], type: 'bars' }
     ];
 
     const hudPanels = [];
