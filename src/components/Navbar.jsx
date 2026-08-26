@@ -12,6 +12,7 @@ export default function Navbar({ theme = 'dark', onToggleTheme, onOpenResume }) 
     { name: "Education", href: "#education" },
     { name: "Skills", href: "#skills" },
     { name: "Experience", href: "#experience" },
+    { name: "Data Science", href: "#data-science" },
     { name: "Projects", href: "#projects" },
     { name: "AI", href: "#ai-journey" },
     { name: "Strengths", href: "#strengths" },

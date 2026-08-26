@@ -99,11 +99,11 @@ export default function App() {
         {/* 04. The Toolbox / Skills (6 Domains with practical use cases) */}
         <Skills />
 
-        {/* 05. Data Foundation — Data Science @ Edu Tantr */}
-        <DataScienceJourney />
-
-        {/* 06. Production Experience — Surfboard Payments & Payment Flow */}
+        {/* 05. Production Experience — Surfboard Payments & Payment Flow */}
         <SurfboardExperience />
+
+        {/* 06. Data Foundation — Data Science @ Edu Tantr */}
+        <DataScienceJourney />
 
         {/* 07. Full-Stack Projects — ServiConnect, LiquiFlow, SelfCook */}
         <Projects onSelectProject={setSelectedProject} />

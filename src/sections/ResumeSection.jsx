@@ -71,7 +71,7 @@ export default function ResumeSection({ onOpenModal }) {
                 </h3>
                 <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-mono">
                   <ShieldCheck className="w-3 h-3" />
-                  <span>Verified Document · 237 KB</span>
+                  <span>Verified Document · 287 KB</span>
                 </div>
               </div>
             </div>
