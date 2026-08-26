@@ -35,8 +35,13 @@ export default function App() {
   const [resumeModalOpen, setResumeModalOpen] = useState(false);
 
   useEffect(() => {
-    // Attach theme attribute to html
+    // Attach theme attribute & class to html
     document.documentElement.setAttribute('data-theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
     localStorage.setItem('portfolio-theme', theme);
   }, [theme]);
 

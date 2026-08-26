@@ -121,10 +121,10 @@ export default function Hero({ onOpenResume }) {
   };
 
   const highlights = [
-    { label: "6+ Built Projects", desc: "Full-Stack, Fintech & AI platforms", icon: Code2, color: "text-indigo-400" },
-    { label: "79.20% TCS NQT", desc: "National qualifier programming benchmark", icon: ShieldCheck, color: "text-cyan-400" },
-    { label: "AI & ML Systems", desc: "CNNs, RAG vector retrieval & Gemini APIs", icon: Brain, color: "text-emerald-400" },
-    { label: "Surfboard Payments", desc: "Production payment & webhook logic", icon: Layers, color: "text-purple-400" }
+    { label: "6+ Built Projects", desc: "Full-Stack, Fintech & AI platforms", icon: Code2, color: "text-indigo-600 dark:text-indigo-400" },
+    { label: "79.20% TCS NQT", desc: "National qualifier programming benchmark", icon: ShieldCheck, color: "text-cyan-600 dark:text-cyan-400" },
+    { label: "AI & ML Systems", desc: "CNNs, RAG vector retrieval & Gemini APIs", icon: Brain, color: "text-emerald-600 dark:text-emerald-400" },
+    { label: "Surfboard Payments", desc: "Production payment & webhook logic", icon: Layers, color: "text-purple-600 dark:text-purple-400" }
   ];
 
   return (
@@ -141,7 +141,7 @@ export default function Hero({ onOpenResume }) {
         {/* Step 1: Status Badge */}
         <motion.div variants={fadeUpVariant}>
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel shadow-lg mb-6 border border-[var(--border-subtle)] backdrop-blur-md">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
+            <span className="w-2 h-2 rounded-full bg-cyan-500 dark:bg-cyan-400 animate-ping" />
             <span className="text-[11px] sm:text-xs font-mono font-medium text-[var(--text-main)]">
               Engineering with logic · Scaling with intelligence
             </span>
@@ -152,7 +152,7 @@ export default function Hero({ onOpenResume }) {
         <motion.div variants={fadeUpVariant} className="relative mb-6 group">
           <div className="absolute -inset-3 rounded-full bg-gradient-to-r from-indigo-500 via-cyan-400 to-violet-500 opacity-45 blur-xl group-hover:opacity-75 transition-opacity duration-300 pointer-events-none transform translate-z-0" />
 
-          <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-full p-2 bg-gradient-to-b from-white/30 to-white/10 border-2 border-white/40 shadow-2xl overflow-hidden backdrop-blur-sm">
+          <div className="relative w-40 h-40 sm:w-48 sm:h-48 md:w-56 md:h-56 rounded-full p-2 bg-gradient-to-b from-white/80 dark:from-white/30 to-white/40 dark:to-white/10 border-2 border-slate-300 dark:border-white/40 shadow-2xl overflow-hidden backdrop-blur-sm">
             <img
               src="/assets/pandiyaraj-profile.png"
               alt="Pandiyaraj A"
@@ -164,8 +164,8 @@ export default function Hero({ onOpenResume }) {
             />
           </div>
 
-          <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-1 rounded-full glass-panel text-[11px] sm:text-xs font-mono font-bold text-indigo-400 shadow-xl flex items-center gap-1.5 border border-indigo-500/60 backdrop-blur-md">
-            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-1 rounded-full glass-panel text-[11px] sm:text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400 shadow-xl flex items-center gap-1.5 border border-indigo-500/50 backdrop-blur-md">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
             <span>MCA · Distinction</span>
           </div>
         </motion.div>
@@ -188,7 +188,7 @@ export default function Hero({ onOpenResume }) {
             ))}
             <motion.span
               variants={letterVariants}
-              className="inline-block ml-3 text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-cyan-300 to-blue-400"
+              className="inline-block ml-3 text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 dark:from-indigo-400 via-cyan-500 dark:via-cyan-300 to-blue-600 dark:to-blue-400"
             >
               A
             </motion.span>
@@ -203,7 +203,7 @@ export default function Hero({ onOpenResume }) {
                 animate={{ y: 0, opacity: 1 }}
                 exit={{ y: -16, opacity: 0 }}
                 transition={{ duration: 0.32, ease: [0.16, 1, 0.3, 1] }}
-                className="text-xs sm:text-sm md:text-base font-mono font-bold text-cyan-400 tracking-wide"
+                className="text-xs sm:text-sm md:text-base font-mono font-bold text-cyan-600 dark:text-cyan-400 tracking-wide"
               >
                 {roles[currentRoleIndex]}
               </motion.p>
@@ -231,9 +231,9 @@ export default function Hero({ onOpenResume }) {
           <MagneticButton
             href="/assets/Pandiyaraj_A_Resume.pdf"
             download="Pandiyaraj_A_Resume.pdf"
-            className="flex items-center gap-2 px-4.5 py-2.5 rounded-xl text-xs font-semibold glass-panel text-[var(--text-main)] hover:text-cyan-400 transition-colors font-mono backdrop-blur-md"
+            className="flex items-center gap-2 px-4.5 py-2.5 rounded-xl text-xs font-semibold glass-panel text-[var(--text-main)] hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors font-mono backdrop-blur-md"
           >
-            <Download className="w-3.5 h-3.5 text-cyan-400" />
+            <Download className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
             <span>Download PDF</span>
           </MagneticButton>
 
@@ -242,7 +242,7 @@ export default function Hero({ onOpenResume }) {
             className="flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs font-medium glass-panel text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors font-mono backdrop-blur-md"
           >
             <span>Scroll Journey</span>
-            <ArrowDown className="w-3 h-3 text-indigo-400 animate-bounce" />
+            <ArrowDown className="w-3 h-3 text-indigo-600 dark:text-indigo-400 animate-bounce" />
           </MagneticButton>
         </motion.div>
 

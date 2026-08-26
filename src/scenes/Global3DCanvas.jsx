@@ -184,18 +184,17 @@ export default function Global3DCanvas({ theme = 'dark' }) {
         colDark = mix(colDark, darkEmerald, clamp(length(r.x) * 0.9, 0.0, 1.0));
         colDark += vec3(0.04, 0.15, 0.35) * f * f * 2.0;
 
-        // Light Mode: Vibrant Opalescent Ribbon Silk / Frosted Iridescence
-        vec3 lightBase    = vec3(0.93, 0.95, 0.99);
-        vec3 lightAzure   = vec3(0.22, 0.60, 0.98);
-        vec3 lightViolet  = vec3(0.46, 0.30, 0.90);
-        vec3 lightCyan    = vec3(0.06, 0.75, 0.82);
-        vec3 lightRose    = vec3(0.95, 0.42, 0.68);
+        // Light Mode: High-Contrast Opalescent Liquid Ribbons & Silk Shimmer
+        vec3 lightBase    = vec3(0.91, 0.94, 0.98);
+        vec3 lightAzure   = vec3(0.18, 0.52, 0.94);
+        vec3 lightViolet  = vec3(0.42, 0.24, 0.88);
+        vec3 lightCyan    = vec3(0.04, 0.68, 0.78);
+        vec3 lightRose    = vec3(0.90, 0.32, 0.62);
 
-        vec3 colLight = mix(lightBase, lightAzure, clamp(f * f * 2.8, 0.0, 0.75));
-        colLight = mix(colLight, lightViolet, clamp(length(q) * 0.9, 0.0, 0.70));
-        colLight = mix(colLight, lightCyan, clamp(length(r.x) * 0.8, 0.0, 0.65));
-        colLight = mix(colLight, lightRose, clamp(r.y * 0.45, 0.0, 0.45));
-        colLight = mix(colLight, vec3(0.98, 0.99, 1.0), 0.28); // Soft airy balance
+        vec3 colLight = mix(lightBase, lightAzure, clamp(f * f * 3.2, 0.0, 0.85));
+        colLight = mix(colLight, lightViolet, clamp(length(q) * 1.1, 0.0, 0.80));
+        colLight = mix(colLight, lightCyan, clamp(length(r.x) * 0.95, 0.0, 0.75));
+        colLight = mix(colLight, lightRose, clamp(r.y * 0.6, 0.0, 0.55));
 
         // Smooth cross-fade between Dark & Light themes
         vec3 finalColor = mix(colDark, colLight, u_theme);
