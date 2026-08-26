@@ -5,10 +5,10 @@ export const educationTimeline = [
     degree: "Master of Computer Applications (MCA)",
     institution: "Alagappa University",
     location: "Karaikudi, Tamil Nadu",
-    status: "Currently Pursuing · Final Year",
+    status: "Graduated with Distinction",
     badge: "Postgraduate Degree",
     accent: "#6366f1",
-    description: "Deepening specialization in intelligent software engineering, machine learning pipelines, scalable distributed architectures, and full-stack enterprise systems.",
+    description: "Deepened specialization in intelligent software engineering, machine learning pipelines, scalable distributed architectures, and full-stack enterprise systems.",
     highlights: [
       "Advanced Algorithms, Data Structures & Computational Complexity",
       "Machine Learning, Deep Learning Architectures & NLP Systems",
