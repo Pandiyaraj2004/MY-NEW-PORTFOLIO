@@ -53,22 +53,22 @@ const logoMap = {
   "Figma": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/figma/figma-original.svg",
 };
 
-// Fallback / Conceptual SVGs & Lucide Icons
+// Fallback / Conceptual SVGs & Lucide Icons with light/dark adaptive styling
 const fallbackMap = {
-  "Generative AI & Gemini API": { icon: Sparkles, color: "text-cyan-400" },
-  "RAG Systems": { icon: Network, color: "text-violet-400" },
-  "NLP (spaCy / NLTK)": { icon: MessageSquareCode, color: "text-emerald-400" },
-  "Power BI": { icon: BarChart3, color: "text-yellow-400" },
-  "Responsive UI": { icon: Smartphone, color: "text-blue-400" },
-  "Component Architecture": { icon: Layers, color: "text-indigo-400" },
-  "RESTful APIs": { icon: Server, color: "text-emerald-400" },
-  "Payment Webhooks": { icon: Webhook, color: "text-amber-400" },
+  "Generative AI & Gemini API": { icon: Sparkles, color: "text-cyan-500 dark:text-cyan-400" },
+  "RAG Systems": { icon: Network, color: "text-violet-500 dark:text-violet-400" },
+  "NLP (spaCy / NLTK)": { icon: MessageSquareCode, color: "text-emerald-500 dark:text-emerald-400" },
+  "Power BI": { icon: BarChart3, color: "text-amber-500 dark:text-yellow-400" },
+  "Responsive UI": { icon: Smartphone, color: "text-blue-500 dark:text-blue-400" },
+  "Component Architecture": { icon: Layers, color: "text-indigo-500 dark:text-indigo-400" },
+  "RESTful APIs": { icon: Server, color: "text-emerald-500 dark:text-emerald-400" },
+  "Payment Webhooks": { icon: Webhook, color: "text-amber-500 dark:text-amber-400" },
 };
 
 export default function TechIcon({ name, className = "w-4 h-4" }) {
   const [imgError, setImgError] = useState(false);
   const logoUrl = logoMap[name];
-  const fallback = fallbackMap[name] || { icon: Code2, color: "text-indigo-400" };
+  const fallback = fallbackMap[name] || { icon: Code2, color: "text-indigo-500 dark:text-indigo-400" };
   const FallbackIcon = fallback.icon;
 
   if (logoUrl && !imgError) {
