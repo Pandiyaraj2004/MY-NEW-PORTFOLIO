@@ -21,7 +21,7 @@ export default function AIJourney({ onSelectProject }) {
     <section id="ai-journey" className="py-28 px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
-        <StoryStep className="text-center mb-20">
+        <StoryStep className="text-center mb-24 min-h-[25vh] flex flex-col justify-center items-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-panel shadow-md mb-4 border border-[var(--border-subtle)]">
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-violet-400">
               Applied AI & Machine Learning
@@ -37,20 +37,20 @@ export default function AIJourney({ onSelectProject }) {
           </p>
         </StoryStep>
 
-        {/* 4 Staggered AI Pillars */}
-        <StoryStep className="mb-20">
+        {/* 4 Staggered AI Pillars Scene */}
+        <StoryStep className="mb-32 min-h-[40vh] flex flex-col justify-center">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {aiPillars.map((p, idx) => {
               const Icon = p.icon;
               return (
-                <div key={idx} className="glass-panel p-4 sm:p-5 rounded-2xl border border-[var(--border-subtle)] hover:border-violet-500/50 transition-colors shadow-sm">
-                  <div className="p-2.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] w-fit mb-3 shadow-sm">
-                    <Icon className={`w-4 h-4 ${p.color}`} />
+                <div key={idx} className="glass-panel p-5 sm:p-6 rounded-3xl border border-[var(--border-subtle)] hover:border-violet-500/50 transition-colors shadow-sm">
+                  <div className="p-3 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] w-fit mb-3.5 shadow-sm">
+                    <Icon className={`w-5 h-5 ${p.color}`} />
                   </div>
-                  <h4 className="text-xs sm:text-sm font-bold text-[var(--text-main)] mb-1">
+                  <h4 className="text-sm font-bold text-[var(--text-main)] mb-1.5">
                     {p.title}
                   </h4>
-                  <p className="text-[11px] text-[var(--text-muted)] leading-relaxed">
+                  <p className="text-xs text-[var(--text-muted)] leading-relaxed">
                     {p.desc}
                   </p>
                 </div>
@@ -60,104 +60,106 @@ export default function AIJourney({ onSelectProject }) {
         </StoryStep>
 
         {/* Scroll-Driven One-by-One AI Project Scenes */}
-        <div className="space-y-20 sm:space-y-28">
+        <div className="space-y-32 sm:space-y-44">
           {aiProjects.map((proj, idx) => (
-            <StoryStep key={proj.id} direction={idx % 2 === 0 ? "left" : "right"}>
-              <div className="glass-panel rounded-3xl overflow-hidden border border-[var(--border-subtle)] hover:border-violet-500/60 transition-all duration-300 shadow-2xl group hover:shadow-violet-500/10">
-                <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
-                  {/* Visual AI Preview Banner */}
-                  {proj.image && (
-                    <div className="lg:col-span-6 relative h-64 sm:h-80 overflow-hidden bg-slate-950 border-b lg:border-b-0 lg:border-r border-[var(--border-subtle)]">
-                      <img
-                        src={proj.image}
-                        alt={`${proj.title} AI Preview`}
-                        width="700"
-                        height="400"
-                        loading="lazy"
-                        decoding="async"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none" />
-                      
-                      <div className="absolute top-3 left-3">
-                        <span className="text-[10px] font-mono font-bold text-violet-300 uppercase bg-slate-900/90 backdrop-blur-md px-2.5 py-1 rounded-lg border border-violet-500/30 shadow-md">
-                          {proj.badge || "AI & Vision"}
-                        </span>
-                      </div>
-
-                      <div className="absolute bottom-3 left-3">
-                        <span className="text-[10px] font-mono font-semibold text-emerald-300 bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-md border border-[var(--border-subtle)]">
-                          {proj.category}
-                        </span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Details */}
-                  <div className={`p-6 sm:p-8 flex flex-col justify-between ${proj.image ? 'lg:col-span-6' : 'lg:col-span-12'}`}>
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className="text-xs font-mono font-bold text-violet-400">
-                          AI Model {proj.number}
-                        </span>
-                      </div>
-
-                      <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-main)] font-display mb-3 group-hover:text-violet-400 transition-colors">
-                        {proj.title}
-                      </h3>
-
-                      <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed font-sans mb-4">
-                        {proj.tagline}
-                      </p>
-
-                      <div className="flex items-start gap-2.5 text-xs text-[var(--text-main)] bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-3 rounded-xl mb-5 shadow-inner">
-                        <Sparkles className="w-4 h-4 text-violet-400 mt-0.5 flex-shrink-0" />
-                        <span className="text-xs leading-relaxed"><strong>Impact:</strong> {proj.outcome}</span>
-                      </div>
-                    </div>
-
-                    <div>
-                      <div className="flex flex-wrap gap-1.5 mb-5">
-                        {proj.tech.map((t, tIdx) => (
-                          <span
-                            key={tIdx}
-                            className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-mono text-[var(--text-main)] bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg shadow-sm"
-                          >
-                            <TechIcon name={t} className="w-3 h-3" />
-                            <span>{t}</span>
+            <div key={proj.id} className="min-h-[55vh] flex flex-col justify-center">
+              <StoryStep direction={idx % 2 === 0 ? "left" : "right"}>
+                <div className="glass-panel rounded-3xl overflow-hidden border border-[var(--border-subtle)] hover:border-violet-500/60 transition-all duration-300 shadow-2xl group hover:shadow-violet-500/10">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
+                    {/* Visual AI Preview Banner */}
+                    {proj.image && (
+                      <div className="lg:col-span-6 relative h-64 sm:h-96 overflow-hidden bg-slate-950 border-b lg:border-b-0 lg:border-r border-[var(--border-subtle)]">
+                        <img
+                          src={proj.image}
+                          alt={`${proj.title} AI Preview`}
+                          width="700"
+                          height="450"
+                          loading="lazy"
+                          decoding="async"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none" />
+                        
+                        <div className="absolute top-3 left-3">
+                          <span className="text-[10px] font-mono font-bold text-violet-300 uppercase bg-slate-900/90 backdrop-blur-md px-2.5 py-1 rounded-lg border border-violet-500/30 shadow-md">
+                            {proj.badge || "AI & Vision"}
                           </span>
-                        ))}
+                        </div>
+
+                        <div className="absolute bottom-3 left-3">
+                          <span className="text-[10px] font-mono font-semibold text-emerald-300 bg-slate-900/80 backdrop-blur-md px-2.5 py-1 rounded-md border border-[var(--border-subtle)]">
+                            {proj.category}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Details */}
+                    <div className={`p-6 sm:p-8 flex flex-col justify-between ${proj.image ? 'lg:col-span-6' : 'lg:col-span-12'}`}>
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className="text-xs font-mono font-bold text-violet-400">
+                            AI Model {proj.number}
+                          </span>
+                        </div>
+
+                        <h3 className="text-xl sm:text-2xl font-bold text-[var(--text-main)] font-display mb-3 group-hover:text-violet-400 transition-colors">
+                          {proj.title}
+                        </h3>
+
+                        <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed font-sans mb-4">
+                          {proj.tagline}
+                        </p>
+
+                        <div className="flex items-start gap-2.5 text-xs text-[var(--text-main)] bg-[var(--bg-surface)] border border-[var(--border-subtle)] p-3 rounded-xl mb-5 shadow-inner">
+                          <Sparkles className="w-4 h-4 text-violet-400 mt-0.5 flex-shrink-0" />
+                          <span className="text-xs leading-relaxed"><strong>Impact:</strong> {proj.outcome}</span>
+                        </div>
                       </div>
 
-                      <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between">
-                        <button
-                          onClick={() => onSelectProject(proj)}
-                          className="text-xs font-semibold text-violet-400 hover:text-violet-300 flex items-center gap-1.5 transition-colors font-mono"
-                        >
-                          <span>Model Architecture</span>
-                          <ArrowUpRight className="w-3.5 h-3.5" />
-                        </button>
-
-                        <div className="flex items-center gap-2">
-                          {proj.github && (
-                            <a
-                              href={proj.github}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs text-[var(--text-main)] hover:text-violet-400 hover:border-violet-500 transition-colors font-medium shadow-sm"
-                              title="View Code on GitHub"
+                      <div>
+                        <div className="flex flex-wrap gap-1.5 mb-5">
+                          {proj.tech.map((t, tIdx) => (
+                            <span
+                              key={tIdx}
+                              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-mono text-[var(--text-main)] bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg shadow-sm"
                             >
-                              <Github className="w-4 h-4" />
-                              <span>Source Code</span>
-                            </a>
-                          )}
+                              <TechIcon name={t} className="w-3 h-3" />
+                              <span>{t}</span>
+                            </span>
+                          ))}
+                        </div>
+
+                        <div className="pt-4 border-t border-[var(--border-subtle)] flex items-center justify-between">
+                          <button
+                            onClick={() => onSelectProject(proj)}
+                            className="text-xs font-semibold text-violet-400 hover:text-violet-300 flex items-center gap-1.5 transition-colors font-mono"
+                          >
+                            <span>Model Architecture</span>
+                            <ArrowUpRight className="w-3.5 h-3.5" />
+                          </button>
+
+                          <div className="flex items-center gap-2">
+                            {proj.github && (
+                              <a
+                                href={proj.github}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-xs text-[var(--text-main)] hover:text-violet-400 hover:border-violet-500 transition-colors font-medium shadow-sm"
+                                title="View Code on GitHub"
+                              >
+                                <Github className="w-4 h-4" />
+                                <span>Source Code</span>
+                              </a>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </StoryStep>
+              </StoryStep>
+            </div>
           ))}
         </div>
       </div>

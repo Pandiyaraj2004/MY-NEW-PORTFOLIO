@@ -17,7 +17,7 @@ export default function Education() {
     <section id="education" className="py-28 px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
-        <StoryStep className="text-center mb-20">
+        <StoryStep className="text-center mb-24 min-h-[25vh] flex flex-col justify-center items-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-panel shadow-md mb-4 border border-[var(--border-subtle)]">
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-indigo-400">
               Education & Degrees
@@ -38,11 +38,11 @@ export default function Education() {
           {/* Glowing Central Trace Line */}
           <div className="absolute top-0 bottom-0 left-4 md:left-1/2 md:-translate-x-1/2 w-0.5 bg-gradient-to-b from-indigo-500 via-cyan-400 to-blue-500 opacity-60 shadow-[0_0_12px_rgba(99,102,241,0.6)] pointer-events-none" />
 
-          <div className="space-y-20 sm:space-y-28">
+          <div className="space-y-32 sm:space-y-44">
             {educationTimeline.map((item, idx) => {
               const isEven = idx % 2 === 0;
               return (
-                <div key={item.id} className="relative flex flex-col md:flex-row items-center">
+                <div key={item.id} className="relative flex flex-col md:flex-row items-center min-h-[45vh] justify-center">
                   {/* Glowing Node Dot on Timeline */}
                   <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-[var(--bg-base)] border-2 border-indigo-400 flex items-center justify-center shadow-[0_0_16px_rgba(99,102,241,0.9)] z-20">
                     <span className="w-2.5 h-2.5 rounded-full bg-indigo-400 animate-pulse" />

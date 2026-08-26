@@ -19,7 +19,7 @@ export default function SurfboardExperience() {
     <section id="experience" className="py-28 px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="max-w-5xl mx-auto">
         {/* Section Header */}
-        <StoryStep className="text-center mb-20">
+        <StoryStep className="text-center mb-24 min-h-[25vh] flex flex-col justify-center items-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-panel shadow-md mb-4 border border-[var(--border-subtle)]">
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-indigo-400">
               Experience
@@ -36,15 +36,15 @@ export default function SurfboardExperience() {
         </StoryStep>
 
         {/* Alternating Vertical Timeline Container (Scroll-Driven Scenes) */}
-        <div className="relative mb-24">
+        <div className="relative mb-36">
           {/* Glowing Central Trace Line */}
           <div className="absolute top-0 bottom-0 left-4 md:left-1/2 md:-translate-x-1/2 w-0.5 bg-gradient-to-b from-emerald-400 via-cyan-400 to-indigo-500 opacity-60 shadow-[0_0_12px_rgba(6,182,212,0.6)] pointer-events-none" />
 
-          <div className="space-y-20 sm:space-y-28">
+          <div className="space-y-32 sm:space-y-44">
             {experiences.map((exp, idx) => {
               const isEven = idx % 2 === 0;
               return (
-                <div key={exp.id} className="relative flex flex-col md:flex-row items-center">
+                <div key={exp.id} className="relative flex flex-col md:flex-row items-center min-h-[45vh] justify-center">
                   {/* Glowing Node Dot on Timeline */}
                   <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-[var(--bg-base)] border-2 border-cyan-400 flex items-center justify-center shadow-[0_0_16px_rgba(6,182,212,0.9)] z-20">
                     <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-pulse" />
@@ -105,7 +105,7 @@ export default function SurfboardExperience() {
                               key={sIdx}
                               className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono font-medium text-[var(--text-main)] bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-lg shadow-sm group-hover:border-indigo-400/40 transition-colors"
                             >
-                              <TechIcon name={skill} className="w-3.5 h-3.5" />
+                              <TechIcon name={skill} className="w-3 h-3" />
                               <span>{skill}</span>
                             </span>
                           ))}
@@ -119,12 +119,12 @@ export default function SurfboardExperience() {
           </div>
         </div>
 
-        {/* Step 3: Visual Architecture Blueprint & Live Interactive Terminal Simulation */}
-        <div className="space-y-12">
+        {/* Step 3 & 4: Visual Architecture Blueprint & Live Interactive Terminal Simulation */}
+        <div className="space-y-24 sm:space-y-36">
           {/* Visual Fintech Architecture Image */}
-          <StoryStep>
+          <StoryStep className="min-h-[45vh] flex flex-col justify-center">
             <div className="glass-panel rounded-3xl overflow-hidden shadow-2xl border border-[var(--border-subtle)]">
-              <div className="relative w-full h-52 sm:h-72 overflow-hidden bg-slate-950 border-b border-[var(--border-subtle)]">
+              <div className="relative w-full h-56 sm:h-80 overflow-hidden bg-slate-950 border-b border-[var(--border-subtle)]">
                 <img
                   src="/assets/surfboard-preview.jpg"
                   alt="Surfboard Payments Architecture Diagram"
@@ -146,7 +146,7 @@ export default function SurfboardExperience() {
           </StoryStep>
 
           {/* Streamlined Payment Flow Simulator */}
-          <StoryStep>
+          <StoryStep className="min-h-[45vh] flex flex-col justify-center">
             <PaymentFlowVisualizer />
           </StoryStep>
         </div>
