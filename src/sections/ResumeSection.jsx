@@ -42,9 +42,9 @@ export default function ResumeSection({ onOpenModal }) {
     <section id="resume" className="py-20 px-4 sm:px-6 lg:px-8 relative z-10">
       <div className="max-w-5xl mx-auto">
         <SectionHeader
-          badge="Candidate Resume"
-          title="Official Curriculum Vitae & Qualifications"
-          subtitle="Inspect Pandiyaraj's official resume directly below or download the PDF."
+          badge="Verified Qualifications"
+          title="Engineering Background & Verified Credentials"
+          subtitle="Explore Pandiyaraj's technical proficiencies, production experience, and official qualifications directly below or download the PDF."
         />
 
         {/* 4 Staggered Highlights */}
