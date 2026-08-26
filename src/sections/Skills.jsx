@@ -3,6 +3,7 @@ import SectionHeader from '../components/SectionHeader';
 import { skillCategories } from '../data/skills';
 import { Code2, Layout, Server, Database, Brain, Wrench } from 'lucide-react';
 import { ScrollRevealContainer, ScrollRevealItem } from '../components/ScrollReveal';
+import TechIcon from '../components/TechIcon';
 
 export default function Skills() {
   const iconMap = {
@@ -56,19 +57,23 @@ export default function Skills() {
                     </div>
                   </div>
 
-                  {/* Concise Skill Badges with 1-Line Use Case */}
+                  {/* Concise Skill Badges with Official Technology Logos */}
                   <div className="space-y-2.5">
                     {category.skills.map((skill, idx) => (
                       <div
                         key={idx}
-                        className="p-2.5 rounded-xl glass-panel"
+                        className="p-2.5 rounded-xl glass-panel group hover:border-[var(--border-active)] transition-colors"
                       >
-                        <div className="flex items-center justify-between gap-2 mb-1">
-                          <h4 className="text-xs font-bold text-[var(--text-main)] font-mono flex items-center gap-1.5">
-                            <span className={`w-1.5 h-1.5 rounded-full ${theme.dot}`} />
-                            {skill.name}
-                          </h4>
-                          <span className="text-[9px] font-mono text-[var(--text-dim)]">
+                        <div className="flex items-center justify-between gap-2 mb-1.5">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <div className="w-5 h-5 rounded-md glass-panel flex items-center justify-center p-0.5 bg-slate-900/60 border border-[var(--border-subtle)] flex-shrink-0 group-hover:scale-105 transition-transform">
+                              <TechIcon name={skill.name} className="w-3.5 h-3.5" />
+                            </div>
+                            <h4 className="text-xs font-bold text-[var(--text-main)] font-mono truncate">
+                              {skill.name}
+                            </h4>
+                          </div>
+                          <span className="text-[9px] font-mono text-[var(--text-dim)] flex-shrink-0">
                             Applied
                           </span>
                         </div>
