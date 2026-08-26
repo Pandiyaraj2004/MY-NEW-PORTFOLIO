@@ -16,15 +16,11 @@ export default function Hero({ onOpenResume }) {
       className="relative min-h-screen flex items-center justify-center pt-24 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden z-10"
     >
       <div className="max-w-5xl mx-auto w-full flex flex-col items-center text-center">
-        {/* Status Badge */}
+        {/* Status / Motto Badge */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full glass-panel shadow-lg mb-7">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
           <span className="text-xs font-mono font-medium text-[var(--text-main)]">
-            Available for Full-Stack & AI Engineering Roles
-          </span>
-          <span className="text-[var(--text-dim)]">|</span>
-          <span className="text-xs font-mono text-cyan-400 flex items-center gap-1">
-            <MapPin className="w-3 h-3" /> Tamil Nadu, India
+            Engineering with logic · Scaling with intelligence
           </span>
         </div>
 
