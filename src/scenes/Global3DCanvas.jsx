@@ -111,9 +111,9 @@ export default function Global3DCanvas({ theme = 'dark' }) {
     // --- B. Structural Lattice Wireframe ---
     const wireframeGeo = new THREE.WireframeGeometry(geodesicGeo);
     const wireframeMat = new THREE.LineBasicMaterial({
-      color: isDark ? 0x93c5fd : 0x94a3b8,
+      color: isDark ? 0x93c5fd : 0x334155,
       transparent: true,
-      opacity: isDark ? 0.45 : 0.28
+      opacity: isDark ? 0.55 : 0.65
     });
     const latticeLines = new THREE.LineSegments(wireframeGeo, wireframeMat);
     coreMasterGroup.add(latticeLines);
@@ -411,8 +411,8 @@ export default function Global3DCanvas({ theme = 'dark' }) {
       const swayAmplitude = window.innerWidth >= 1024 ? 2.5 : 1.1;
       const horizontalSway = Math.sin(currentScroll * Math.PI * 4.0) * swayAmplitude;
       const targetCoreX = horizontalSway + mouseX * 0.25;
-      const targetCoreY = 0.85 - currentScroll * 4.0 + Math.cos(elapsed * 0.5) * 0.05 - mouseY * 0.25;
-      const targetCoreZ = -0.6 - currentScroll * 7.0;
+      const targetCoreY = -currentScroll * 4.0 + Math.cos(elapsed * 0.5) * 0.05 - mouseY * 0.25;
+      const targetCoreZ = -currentScroll * 7.0;
 
       // A. Dual-Axis Continuous Rotation & Scroll-Driven Rolling
       if (coreMasterGroup) {
