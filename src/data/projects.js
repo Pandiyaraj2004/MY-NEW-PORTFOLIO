@@ -30,7 +30,7 @@ export const projects = [
     ],
     outcome: "Created a scalable blueprint for empowering unorganized labor markets with automated validation, zero platform friction, and transparent consumer matching.",
     github: "https://github.com/Pandiyaraj2004",
-    demo: "https://pandiyaraj.netlify.app",
+    demo: "https://serviconnect-seven.vercel.app/",
     color: "from-blue-600 to-cyan-500",
     accent: "#3b82f6"
   },
