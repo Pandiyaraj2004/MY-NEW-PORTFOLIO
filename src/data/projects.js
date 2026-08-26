@@ -5,6 +5,7 @@ export const projects = [
     title: "ServiConnect — AI-Powered Service Marketplace",
     category: "Full-Stack & Generative AI",
     badge: "Full-Stack · AI Platform",
+    image: "/assets/serviconnect-preview.jpg",
     tagline: "Connecting customers with verified local service providers across 13 service categories in Tier 2/3 Indian cities.",
     tech: ["React.js", "Node.js", "Express.js", "Firebase", "Gemini AI", "OpenStreetMap", "Vercel"],
     stats: [
@@ -40,6 +41,7 @@ export const projects = [
     title: "LiquiFlow — Post-Authorization Treasury Middleware",
     category: "Fintech & Payment Systems",
     badge: "Fintech · Middleware",
+    image: "/assets/liquiflow-preview.jpg",
     tagline: "Post-authorization treasury middleware platform modeling high-volume settlement and refund workflows.",
     tech: ["React.js", "Vite", "Tailwind CSS", "Node.js", "Express.js", "Firestore", "Gemini AI"],
     stats: [
@@ -75,6 +77,7 @@ export const projects = [
     title: "Paylink — Digital Payment Link & Checkout System",
     category: "Fintech & Web Applications",
     badge: "Fintech · Live App",
+    image: "/assets/paylink-preview.jpg",
     tagline: "Instant digital payment link generator and checkout interface with real-time transaction confirmation and ledger tracking.",
     tech: ["React.js", "Firebase", "Firestore", "REST APIs", "Tailwind CSS", "Webhooks"],
     stats: [
@@ -110,6 +113,7 @@ export const projects = [
     title: "SelfCook — Image-Based Recipe Extraction & Automation",
     category: "Computer Vision & Automation",
     badge: "AI Vision · Automation",
+    image: "/assets/selfcook-preview.jpg",
     tagline: "Computer vision and web automation system that extracts ingredients from food photographs and fetches recipes.",
     tech: ["Node.js", "Puppeteer", "Imagga API", "Edamam API", "Google Lens", "SQL"],
     stats: [
@@ -145,6 +149,7 @@ export const projects = [
     title: "Smart Crop Disease Prediction & Health Monitoring",
     category: "Deep Learning & Computer Vision",
     badge: "Computer Vision · CNN",
+    image: "/assets/crop-disease-preview.jpg",
     tagline: "Deep learning crop pathology classification system with an integrated natural language advisory chatbot for agricultural treatments.",
     tech: ["Python", "TensorFlow", "Keras", "MobileNetV2", "OpenCV", "Flask", "NLP"],
     stats: [
@@ -180,6 +185,7 @@ export const projects = [
     title: "Real-Time NLP Conversational Intelligence System",
     category: "Natural Language Processing",
     badge: "NLP · Conversational AI",
+    image: "/assets/rag-chatbot-preview.jpg",
     tagline: "Context-aware conversational system combining intent recognition, named entity extraction, and RAG retrieval architecture.",
     tech: ["Python", "NLTK", "spaCy", "RAG", "LLMs", "Flask", "REST APIs"],
     stats: [
