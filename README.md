@@ -1,69 +1,65 @@
-# MY-NEW-PORTFOLIO
-# 💼 Pandiyaraj A – Portfolio
+# Pandiyaraj A — Developer Portfolio
 
-Hi, I'm **Pandiyaraj A**, an MCA student passionate about AI, Data Science, and building real-world applications. I specialize in machine learning, data visualization, and natural language processing. This portfolio showcases my projects, certifications, and skills aimed at solving real-world data problems.
+> A React portfolio connecting full-stack projects, AI experiments, and interactive 3D storytelling.
 
----
+**React · JavaScript · Vite · Three.js · Framer Motion · Tailwind CSS**
 
-## 🚀 Projects
+[Visit portfolio](https://pandiyaraj.netlify.app/) · [Resume](public/assets/Pandiyaraj_A_Resume.pdf) · [LinkedIn](https://www.linkedin.com/in/pandiyaraj-a-mca/) · [Email](mailto:pandiyaraja409@gmail.com)
 
-### 🔹 SelfCook AI – Food Recipe Generator  
-AI-powered web app that generates recipes using food images and names. Features include calorie estimation, cuisine detection, and recipe suggestions.  
-**Tech:** Node.js, Puppeteer, JavaScript, SQL  
-[🔗 GitHub Repo](#) | [📸 Screenshot](#)
+## Overview
 
----
+My portfolio brings together projects across web development, AI/ML, payment systems, and data-oriented applications. The implementation combines reusable React components with animated sections and Three.js scenes.
 
-### 🔹 Real-Time Chatbot Using NLP  
-Chatbot trained on 20,000+ conversational records using NLTK and spaCy. Capable of real-time intent detection and response.  
-**Tech:** Python, NLTK, spaCy  
-[🔗 GitHub Repo](#)
+## Explore the experience
 
----
+- Project details and previews, organized through a dedicated data module.
+- Resume and certificate viewers.
+- Sections for education, experience, skills, and career direction.
+- Interactive scenes covering neural networks, data pipelines, and payment flows.
+- A contact form that prepares an email in the visitor's mail application.
 
-### 🔹 Power BI Sales Dashboard  
-Interactive dashboard for analyzing sales KPIs, profit trends, and category breakdowns. Used slicers and DAX for deep insights.  
-**Tools:** Power BI, Excel  
-[📸 Dashboard Preview](#)
+## Run locally
 
----
+```bash
+git clone https://github.com/Pandiyaraj2004/MY-NEW-PORTFOLIO.git
+cd MY-NEW-PORTFOLIO
+npm install
+npm run dev
+```
 
-### 🔹 Multiple Disease Prediction System  
-Machine learning app that predicts diseases like diabetes, heart issues, and Parkinson’s using health metrics.  
-**Tech:** Python, Streamlit, Scikit-learn  
-[🔗 GitHub Repo](#) | [📸 Demo](#)
+Open the local URL printed by Vite.
 
----
+```bash
+npm run build
+npm run preview
+```
 
-## 🎓 Certifications
+## Code map
 
-- TCS NQT – Score: 79.20%  
-- Machine Learning – TCS iON  
-- Python Programming (Beginner to Advanced) – Udemy  
-- Data Science Internship – Edutentar  
-[📁 View All Certificates](https://drive.google.com/drive/folders/1DF5EfkoMbwXmgwFOVqMi1Ce1PmTqXVma?usp=sharing)
+| Path | Purpose |
+| --- | --- |
+| [src/sections](src/sections) | Page sections and content composition |
+| [src/components](src/components) | Navigation, modals, reveal effects, reusable UI |
+| [src/scenes](src/scenes) | Three.js visual experiences |
+| [src/data](src/data) | Projects, education, experience, skills, certificates |
+| [public/assets](public/assets) | Resume, profile image, project previews |
 
----
+## Selected project repositories
 
-## 🛠️ Skills
+| Area | Project |
+| --- | --- |
+| Full-stack applications | [PayLink](https://github.com/Pandiyaraj2004/Paylink), [LiquiFlow](https://github.com/Pandiyaraj2004/liquiflow_new) |
+| AI workflows | [VidPilot AI](https://github.com/Pandiyaraj2004/VidPilot-AI) |
+| Machine learning | [Smart Crop Disease Identification](https://github.com/Pandiyaraj2004/smart-crop-Disease-Identification) |
+| Frontend experiences | [Gowtham Events](https://github.com/Pandiyaraj2004/Gowtham-events) |
+| Language engineering | [Parithi](https://github.com/Pandiyaraj2004/Parithi-Programming-Language) |
 
-**Languages:** Python, JavaScript, R  
-**Data Tools:** Power BI, Excel, Scikit-learn, Pandas, NumPy  
-**NLP & AI:** NLTK, spaCy, BeautifulSoup  
-**Web Tech:** HTML, CSS, Flask  
-**Databases:** SQL, SQLite  
-**Version Control:** Git, GitHub  
-**Others:** Tabula, Puppeteer, Streamlit
+## Customization
 
----
+Update the modules in `src/data/` to change portfolio content. Edit the contact details in `src/sections/Contact.jsx`. Replace the resume in `public/assets/` when publishing a new version.
 
-## 📬 Contact Me
-
-- 📧 Email: [pandiyaraj409@gmail.com](mailto:pandiyaraj409@gmail.com)  
-- 🔗 LinkedIn: [linkedin.com/in/pandiyaraj-a-mca](https://linkedin.com/in/pandiyaraj-a-mca)  
-- 🖥️ GitHub: [github.com/pandiyaraj409](https://github.com/pandiyaraj409)
+The root also contains earlier standalone HTML/CSS files; the current npm development workflow uses the React application in `src/`.
 
 ---
 
-> ✨ Open to internship or entry-level roles in data science, analytics, or AI-driven product development.
-
+Built by **Pandiyaraj A** · [Portfolio](https://pandiyaraj.netlify.app/) · [GitHub](https://github.com/Pandiyaraj2004) · [LinkedIn](https://www.linkedin.com/in/pandiyaraj-a-mca/)
