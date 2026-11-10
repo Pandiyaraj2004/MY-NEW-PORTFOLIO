@@ -166,7 +166,7 @@ export default function Hero({ onOpenResume }) {
 
           <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 whitespace-nowrap px-4 py-1 rounded-full glass-panel text-[11px] sm:text-xs font-mono font-bold text-indigo-600 dark:text-indigo-400 shadow-xl flex items-center gap-1.5 border border-indigo-500/50 backdrop-blur-md">
             <Sparkles className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
-            <span>MCA · Distinction</span>
+            <span>BCA</span>
           </div>
         </motion.div>
 
