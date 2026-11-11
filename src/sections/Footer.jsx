@@ -46,7 +46,7 @@ export default function Footer({ onOpenResume }) {
 
       <div className="max-w-6xl mx-auto mt-8 pt-6 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-center justify-between text-[11px] text-[var(--text-dim)] gap-2 text-center sm:text-left">
         <div>
-          © {new Date().getFullYear()} Pandiyaraj A · BCA, Alagappa Government Arts College · All Rights Reserved
+          © {new Date().getFullYear()} Pandiyaraj A · MCA, Alagappa University · All Rights Reserved
         </div>
         <div className="flex items-center gap-1">
           <span>Engineered with React, Three.js & Tailwind</span>
