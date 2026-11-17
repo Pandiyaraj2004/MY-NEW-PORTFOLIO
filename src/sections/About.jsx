@@ -6,8 +6,8 @@ import { StoryStep } from '../components/ScrollReveal';
 export default function About() {
   const pillars = [
     {
-      title: "MCA Postgraduate · Distinction",
-      desc: "Completed MCA at Alagappa University (2024–2026) with BCA foundation. Strong grounding in algorithms and computational systems.",
+      title: "BCA Graduate",
+      desc: "Completed BCA at Alagappa Government Arts College (2021–2024). Strong grounding in algorithms and computational systems.",
       icon: GraduationCap,
       badge: "Education",
       color: "text-blue-500 dark:text-blue-400"
