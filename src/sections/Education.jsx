@@ -20,7 +20,7 @@ export default function Education() {
         <StoryStep className="text-center mb-24 min-h-[25vh] flex flex-col justify-center items-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-panel shadow-md mb-4 border border-[var(--border-subtle)]">
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-indigo-400">
-              Education & Degree
+              Education & Degrees
             </span>
           </div>
           
