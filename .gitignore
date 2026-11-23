@@ -6,3 +6,6 @@ dist/
 
 # Local VS Code settings
 .vscode/
+
+# Temporary files
+tmp/
