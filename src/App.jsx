@@ -98,7 +98,7 @@ export default function App() {
         {/* 02. Identity & Who I Am */}
         <About />
 
-        {/* 03. Education — Academic Foundation (BCA) */}
+        {/* 03. Education — Academic Milestones (BCA -> MCA) */}
         <Education />
 
         {/* 04. The Toolbox / Skills (6 Domains with practical use cases) */}

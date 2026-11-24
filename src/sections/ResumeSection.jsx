@@ -32,7 +32,7 @@ export default function ResumeSection({ onOpenModal }) {
   }, []);
 
   const resumeHighlights = [
-    { label: "Degree Track", val: "BCA (Distinction)" },
+    { label: "Degree Track", val: "MCA (Distinction) · BCA (Distinction)" },
     { label: "Internships", val: "Surfboard Payments & Edu Tantr" },
     { label: "Core Stack", val: "Python, JavaScript, React.js, Node.js" },
     { label: "Benchmark", val: "79.20% TCS NQT Percentile" }
@@ -143,7 +143,7 @@ export default function ResumeSection({ onOpenModal }) {
                     Quick Executive Profile Snapshot
                   </div>
                   <p className="text-[var(--text-muted)]">
-                    BCA Graduate from Alagappa Government Arts College with hands-on production fintech internship at <strong>Surfboard Payments</strong> and data science internship at <strong>Edu Tantr</strong>. 79.20% TCS NQT national benchmark.
+                    MCA Postgraduate (Graduated with Distinction) from Alagappa University with hands-on production fintech internship at <strong>Surfboard Payments</strong> and data science internship at <strong>Edu Tantr</strong>. 79.20% TCS NQT national benchmark.
                   </p>
                 </div>
 
